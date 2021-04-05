@@ -4,7 +4,7 @@
 #include "Scence.h"
 #include "GameObject.h"
 #include "Brick.h"
-#include "Mario.h"
+#include "Grimmick.h"
 #include "Goomba.h"
 #include "Koopas.h"
 #include "Map.h"
@@ -14,7 +14,7 @@ class CPlayScene: public CScene
 {
 protected: 
 	Map* map;
-	CMario *player;					// A play scene has to have player, right? 
+	CGrimmick* player;					// A play scene has to have player, right? 
 
 	vector<LPGAMEOBJECT> objects;
 
@@ -35,7 +35,7 @@ public:
 	virtual void Render();
 	virtual void Unload();
 
-	CMario * GetPlayer() { return player; } 
+	CGrimmick* GetPlayer() { return player; }
 
 	//friend class CPlayScenceKeyHandler;
 };
