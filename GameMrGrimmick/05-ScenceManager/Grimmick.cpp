@@ -166,7 +166,6 @@ void CGrimmick::GetBoundingBox(float &left, float &top, float &right, float &bot
 {
 	left = x;
 	top = y; 
-
 	right = x + GRIMMICK_BIG_BBOX_WIDTH;
 	bottom = y + GRIMMICK_BIG_BBOX_HEIGHT;
 }
