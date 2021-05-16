@@ -25,7 +25,22 @@ void CGrimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CGameObject::Update(dt);
 
 	// Simple fall down
+	if(holdJump!=1)
 	vy += GRIMMICK_GRAVITY*dt;
+
+
+	if (holdJump == 1)
+	{
+		if (abs(y - startJump) <= 50)
+			SetState(GRIMMICK_STATE_HOLD_JUMP);
+		else
+		{
+			holdJump = 0;
+			startJump = -1;
+		}
+	}
+
+	
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -43,6 +58,8 @@ void CGrimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		untouchable = 0;
 	}
 
+
+	
 	// No collision occured, proceed normally
 	if (coEvents.size()==0)
 	{
@@ -63,6 +80,7 @@ void CGrimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		//	x += nx*abs(rdx); 
 		
 		// block every object first!
+		
 		x += min_tx*dx + nx*0.4f;
 		y += min_ty*dy + ny*0.4f;
 
@@ -77,35 +95,40 @@ void CGrimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
+			if (e->ny < 0)
 			{
-				CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
-
-				// jump on top >> kill Goomba and deflect a bit 
-				if (e->ny < 0)
-				{
-					if (goomba->GetState()!= GOOMBA_STATE_DIE)
-					{
-						goomba->SetState(GOOMBA_STATE_DIE);
-						vy = -GRIMMICK_JUMP_DEFLECT_SPEED;
-					}
-				}
-				else if (e->nx != 0)
-				{
-					if (untouchable==0)
-					{
-						if (goomba->GetState()!=GOOMBA_STATE_DIE)
-						{
-								SetState(GRIMMICK_STATE_DIE);
-						}
-					}
-				}
-			} // if Goomba
-			else if (dynamic_cast<CPortal *>(e->obj))
-			{
-				CPortal *p = dynamic_cast<CPortal *>(e->obj);
-				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+				jump = 0;
 			}
+
+			//if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
+			//{
+			//	CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
+
+			//	// jump on top >> kill Goomba and deflect a bit 
+			//	if (e->ny < 0)
+			//	{
+			//		if (goomba->GetState()!= GOOMBA_STATE_DIE)
+			//		{
+			//			goomba->SetState(GOOMBA_STATE_DIE);
+			//			vy = -GRIMMICK_JUMP_DEFLECT_SPEED;
+			//		}
+			//	}
+			//	else if (e->nx != 0)
+			//	{
+			//		if (untouchable==0)
+			//		{
+			//			if (goomba->GetState()!=GOOMBA_STATE_DIE)
+			//			{
+			//					SetState(GRIMMICK_STATE_DIE);
+			//			}
+			//		}
+			//	}
+			//} // if Goomba
+			//else if (dynamic_cast<CPortal *>(e->obj))
+			//{
+			//	CPortal *p = dynamic_cast<CPortal *>(e->obj);
+			//	CGame::GetInstance()->SwitchScene(p->GetSceneId());
+			//}
 		}
 	}
 
@@ -116,21 +139,43 @@ void CGrimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 void CGrimmick::Render()
 {
 	int ani = -1;
-	
-		if (vx == 0)
+
+	if (jump == 1)
+	{
+		if (nx > 0)
+			ani = GRIMMICK_ANI_JUMPING_RIGHT;
+		else
+			ani = GRIMMICK_ANI_JUMPING_LEFT;
+	}
+	else if (state == GRIMMICK_STATE_WALKING_RIGHT)
+	{
+		ani = GRIMMICK_ANI_WALKING_RIGHT;
+
+	}
+	else if (state == GRIMMICK_STATE_WALKING_LEFT)
+	{
+		ani = GRIMMICK_ANI_WALKING_LEFT;
+	}
+	else //if (state == GIMMICK_STATE_IDLE)
+	{
+		if (nx > 0)
 		{
-			if (nx>0) ani = GRIMMICK_ANI_BIG_IDLE_RIGHT;
-			else ani = GRIMMICK_ANI_BIG_IDLE_LEFT;
+			ani = GRIMMICK_ANI_IDLE_RIGHT;
 		}
-		else if (vx > 0) 
-			ani = GRIMMICK_ANI_BIG_WALKING_RIGHT;
-		else ani = GRIMMICK_ANI_BIG_WALKING_LEFT;
-	
+		else
+			ani = GRIMMICK_ANI_IDLE_LEFT;
+	}
 
 	int alpha = 255;
 	if (untouchable) alpha = 128;
 
 	animation_set->at(ani)->Render(x, y, alpha);
+
+	/*if (star != NULL)
+		star->Render();
+
+	if (loading == 1)
+		load_star->Render();*/
 
 	RenderBoundingBox();
 }
@@ -150,9 +195,12 @@ void CGrimmick::SetState(int state)
 		nx = -1;
 		break;
 	case GRIMMICK_STATE_JUMP:
-		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
 		vy = -GRIMMICK_JUMP_SPEED_Y;
-		break; 
+		jump = 1;
+		break;
+	case GRIMMICK_STATE_HOLD_JUMP:
+		vy = -GRIMMICK_JUMP_SPEED_Y;
+		break;
 	case GRIMMICK_STATE_IDLE:
 		vx = 0;
 		break;

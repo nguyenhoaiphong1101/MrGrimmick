@@ -3,7 +3,9 @@
 
 #define GRIMMICK_WALKING_SPEED		0.15f 
 
-#define GRIMMICK_JUMP_SPEED_Y		0.5f
+#define GRIMMICK_JUMP_SPEED_Y		0.2f
+#define GRIMMICK_JUMP_STATE_SPEED_Y		0.00001f
+#define GRIMMICK_DOUBLE_JUMP_SPEED	0.245f
 #define GRIMMICK_JUMP_DEFLECT_SPEED 0.2f
 #define GRIMMICK_GRAVITY			0.002f
 #define GRIMMICK_DIE_DEFLECT_SPEED	 0.5f
@@ -13,13 +15,16 @@
 #define GRIMMICK_STATE_WALKING_LEFT	200
 #define GRIMMICK_STATE_JUMP			300
 #define GRIMMICK_STATE_DIE				400
+#define GRIMMICK_STATE_HOLD_JUMP				500
 
-#define GRIMMICK_ANI_BIG_IDLE_RIGHT		1
-#define GRIMMICK_ANI_BIG_IDLE_LEFT			0
+#define GRIMMICK_ANI_IDLE_RIGHT		1
+#define GRIMMICK_ANI_IDLE_LEFT			0
 
+#define GRIMMICK_ANI_WALKING_LEFT			2
+#define GRIMMICK_ANI_WALKING_RIGHT			3
+#define GRIMMICK_ANI_JUMPING_RIGHT		4
+#define GRIMMICK_ANI_JUMPING_LEFT		5
 
-#define GRIMMICK_ANI_BIG_WALKING_RIGHT			3
-#define GRIMMICK_ANI_BIG_WALKING_LEFT			2
 
 
 
@@ -34,18 +39,23 @@
 
 class CGrimmick : public CGameObject
 {
+	int jump = 0;
+	
 	int untouchable;
 	DWORD untouchable_start;
 
 	float start_x;			// initial position of Mario at scene
 	float start_y; 
 public: 
+	int startJump = -1;
+	int holdJump = 0;
 	CGrimmick(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
-
+	int GetJumping() { return jump; };
 	void SetState(int state);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
+	void SetJumping(int jump) { this->jump = jump; };
 
 	void Reset();
 

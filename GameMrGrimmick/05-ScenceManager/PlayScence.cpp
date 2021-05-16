@@ -30,8 +30,6 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 
 #define OBJECT_TYPE_GRIMMICK	0
 #define OBJECT_TYPE_BRICK	1
-#define OBJECT_TYPE_GOOMBA	2
-#define OBJECT_TYPE_KOOPAS	3
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -154,9 +152,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[4].c_str());
@@ -315,11 +311,28 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	CGrimmick *grimmick = ((CPlayScene*)scence)->GetPlayer();
 	switch (KeyCode)
 	{
+		
 	case DIK_SPACE:
-		grimmick->SetState(GRIMMICK_STATE_JUMP);
+		if (grimmick->GetJumping() == 0)
+		{
+			grimmick->startJump = grimmick->y;
+        	grimmick->SetState(GRIMMICK_STATE_JUMP);
+			grimmick->holdJump = 1;
+		}
 		break;
 	case DIK_A: 
 		grimmick->Reset();
+		break;
+	}
+}
+
+void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
+{
+	CGrimmick* grimmick = ((CPlayScene*)scence)->GetPlayer();
+	switch (KeyCode)
+	{
+	case DIK_SPACE:
+		grimmick->holdJump = 0;
 		break;
 	}
 }
@@ -335,6 +348,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		grimmick->SetState(GRIMMICK_STATE_WALKING_RIGHT);
 	else if (game->IsKeyDown(DIK_LEFT))
 		grimmick->SetState(GRIMMICK_STATE_WALKING_LEFT);
-	else
+	else 
 		grimmick->SetState(GRIMMICK_STATE_IDLE);
+	/*if (game->IsKeyDown(DIK_SPACE))
+	{
+		grimmick->SetState(GRIMMICK_STATE_HOLD_JUMP);
+	}*/
 }
