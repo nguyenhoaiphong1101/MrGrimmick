@@ -6,6 +6,7 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
+#include "BlackEnemy.h"
 
 using namespace std;
 
@@ -30,6 +31,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 
 #define OBJECT_TYPE_GRIMMICK	0
 #define OBJECT_TYPE_BRICK	1
+#define OBJECT_TYPE_BLACKENEMY 4
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -153,6 +155,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
+	case OBJECT_TYPE_BLACKENEMY: obj = new BlackEnemy(); break;
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[4].c_str());
@@ -273,7 +276,7 @@ void CPlayScene::Update(DWORD dt)
 	game->GetCameraBoundingBox(left, top, right, bottom);
 	grid->GetUpdateObjects(updateObject, left, top, right, bottom);
 
-	for (size_t i = 1; i < updateObject.size(); i++)
+	for (size_t i = 0; i < updateObject.size(); i++)
 	{
 		if (player == NULL) return;
 		if (updateObject[i]->isToUpdate)
