@@ -49,6 +49,7 @@ class CGame
 
 public:
 	void InitKeyboard();
+	void GetCameraBoundingBox(float& left, float& top, float& right, float& bottom);
 	void SetKeyHandler(LPKEYEVENTHANDLER handler) { keyHandler = handler; }
 	void Init(HWND hWnd);
 	void Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha = 255);

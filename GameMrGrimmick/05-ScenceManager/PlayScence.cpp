@@ -249,7 +249,7 @@ void CPlayScene::Update(DWORD dt)
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
-	vector<LPGAMEOBJECT> coObjects;
+	/*vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 1; i < objects.size(); i++)
 	{
 		coObjects.push_back(objects[i]);
@@ -258,6 +258,26 @@ void CPlayScene::Update(DWORD dt)
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		objects[i]->Update(dt, &coObjects);
+	}*/
+
+	CGame* game = CGame::GetInstance();
+	grid->Clear();
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		//coobjects.push_back(objects[i]);
+		grid->Add(objects[i]);
+		objects[i]->setToUpdate(true);
+	}
+	updateObject.clear();
+	float left, top, right, bottom;
+	game->GetCameraBoundingBox(left, top, right, bottom);
+	grid->GetUpdateObjects(updateObject, left, top, right, bottom);
+
+	for (size_t i = 1; i < updateObject.size(); i++)
+	{
+		if (player == NULL) return;
+		if (updateObject[i]->isToUpdate)
+			updateObject[i]->Update(dt, &updateObject);
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
@@ -267,7 +287,6 @@ void CPlayScene::Update(DWORD dt)
 	float cx, cy;
 	player->GetPosition(cx, cy);
 
-	CGame *game = CGame::GetInstance();
 
 	if (cx < 760 + game->GetScreenWidth() / 2)
 	cx -= game->GetScreenWidth() / 2;
@@ -275,9 +294,10 @@ void CPlayScene::Update(DWORD dt)
 	{
 		cx = 760;
 	}
-	cy -= game->GetScreenHeight() / 2;
+	/*cy -= game->GetScreenHeight() / 2;*/
 
 	CGame::GetInstance()->SetCamPos((int)cx, (int)0);
+	DebugOut(L"dt: %d \n",dt);
 }
 
 void CPlayScene::Render()
@@ -286,8 +306,14 @@ void CPlayScene::Render()
 	{
 		this->map->Render();
 	}
+	for (int i = 0; i <updateObject.size(); i++)
+		updateObject[i]->Render();
+	/*if (map)
+	{
+		this->map->Render();
+	}
 	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
+		objects[i]->Render();*/
 }
 
 /*

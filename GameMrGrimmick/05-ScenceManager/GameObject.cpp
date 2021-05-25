@@ -20,6 +20,7 @@ void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	this->dt = dt;
 	dx = vx*dt;
 	dy = vy*dt;
+	this->setToUpdate(false);
 }
 
 /*

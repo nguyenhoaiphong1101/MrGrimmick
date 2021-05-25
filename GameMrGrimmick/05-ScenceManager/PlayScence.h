@@ -8,6 +8,8 @@
 #include "Goomba.h"
 #include "Koopas.h"
 #include "Map.h"
+#include "Grid.h"
+
 
 
 class CPlayScene: public CScene
@@ -15,8 +17,9 @@ class CPlayScene: public CScene
 protected: 
 	Map* map;
 	CGrimmick* player;					// A play scene has to have player, right? 
-
+	CGrid* grid = CGrid::GetInstance();
 	vector<LPGAMEOBJECT> objects;
+	vector<LPGAMEOBJECT> updateObject;
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);

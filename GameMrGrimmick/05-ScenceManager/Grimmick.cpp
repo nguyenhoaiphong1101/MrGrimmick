@@ -5,7 +5,6 @@
 #include "Grimmick.h"
 #include "Game.h"
 
-#include "Goomba.h"
 #include "Portal.h"
 
 CGrimmick::CGrimmick(float x, float y) : CGameObject()
