@@ -53,7 +53,6 @@ public:
 
 	float vx;
 	float vy;
-	bool isToUpdate;
 
 	int nx;	 
 
@@ -92,7 +91,6 @@ public:
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
 	virtual void Render() = 0;
-	void setToUpdate(bool update) { this->isToUpdate = update; }
 	virtual void SetState(int state) { this->state = state; }
 
 

@@ -54,10 +54,10 @@
     <ClCompile Include="Grimmick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Grid.cpp">
+    <ClCompile Include="BlackEnemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BlackEnemy.cpp">
+    <ClCompile Include="Quadtree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,10 +101,10 @@
     <ClInclude Include="Grimmick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Grid.h">
+    <ClInclude Include="BlackEnemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BlackEnemy.h">
+    <ClInclude Include="Quadtree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

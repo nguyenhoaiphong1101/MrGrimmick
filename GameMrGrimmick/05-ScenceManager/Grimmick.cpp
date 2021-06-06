@@ -25,12 +25,12 @@ void CGrimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	// Simple fall down
 	if(holdJump!=1)
-	vy += GRIMMICK_GRAVITY*dt;
+	vy -= GRIMMICK_GRAVITY*dt;
 
 
 	if (holdJump == 1)
 	{
-		if (abs(y - startJump) <= 50)
+		if (abs(y - startJump) <= 80)
 			SetState(GRIMMICK_STATE_HOLD_JUMP);
 		else
 		{
@@ -94,7 +94,7 @@ void CGrimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (e->ny < 0)
+			if (e->ny > 0)
 			{
 				jump = 0;
 			}
@@ -194,11 +194,11 @@ void CGrimmick::SetState(int state)
 		nx = -1;
 		break;
 	case GRIMMICK_STATE_JUMP:
-		vy = -GRIMMICK_JUMP_SPEED_Y;
+		vy = GRIMMICK_JUMP_SPEED_Y;
 		jump = 1;
 		break;
 	case GRIMMICK_STATE_HOLD_JUMP:
-		vy = -GRIMMICK_JUMP_SPEED_Y;
+		vy = GRIMMICK_JUMP_SPEED_Y;
 		break;
 	case GRIMMICK_STATE_IDLE:
 		vx = 0;
@@ -212,9 +212,9 @@ void CGrimmick::SetState(int state)
 void CGrimmick::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
 	left = x;
-	top = y; 
-	right = x + GRIMMICK_BIG_BBOX_WIDTH;
-	bottom = y + GRIMMICK_BIG_BBOX_HEIGHT;
+	top = y;
+	right = x + GRIMMICK_BIG_BBOX_WIDTH ;
+	bottom = y - GRIMMICK_BIG_BBOX_HEIGHT;
 }
 
 /*
@@ -223,7 +223,7 @@ void CGrimmick::GetBoundingBox(float &left, float &top, float &right, float &bot
 void CGrimmick::Reset()
 {
 	SetState(GRIMMICK_STATE_IDLE);
-	SetPosition(start_x, start_y);
+	SetPosition(40, 170);
 	SetSpeed(0, 0);
 }
 
