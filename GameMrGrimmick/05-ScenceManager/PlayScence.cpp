@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 
 #include "PlayScence.h"
@@ -245,6 +245,21 @@ void CPlayScene::Load()
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
+
+	int ids = CGame::GetInstance()->GetCurrentScene()->GetId();
+	if (ids == 1)
+	{
+		quadtree = new Quadtree(1, 0.0f, 384.0f, 1024.0f, 0.0f);
+	}
+	else if (ids == 2)
+	{
+		quadtree = new Quadtree(1, 0.0f, 760.0f, 1536.0f, 0.0f);
+	}
+	else if (ids == 3)
+	{
+		quadtree = new Quadtree(1, 0.0f, 192.0f, 1024.0f, 0.0f);
+	}
+	
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -252,7 +267,7 @@ void CPlayScene::Update(DWORD dt)
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
-	vector<LPGAMEOBJECT> coObjects;
+	/*vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 1; i < objects.size(); i++)
 	{
 		coObjects.push_back(objects[i]);
@@ -261,7 +276,46 @@ void CPlayScene::Update(DWORD dt)
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		objects[i]->Update(dt, &coObjects);
+	}*/
+
+
+	for (size_t i = 0; i < objects.size(); i++) {
+		if (dynamic_cast<CGrimmick*>(objects[i]))
+			continue;
+		
+		quadtree->Insert(objects[i]);
 	}
+
+	// Update player
+	vector<LPGAMEOBJECT> coObjects;
+	quadtree->Retrieve(&coObjects, player);
+	player->Update(dt, &coObjects);
+
+	// Duyệt các object cần update (có code xử lý trong hàm update của object đó)
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		if (!CGame::GetInstance()->ObjectInCamera(objects[i]))
+			continue;
+		if (dynamic_cast<CGrimmick*>(objects[i]))
+			continue;
+		/*if (dynamic_cast<CBoom*>(objects[i])
+			|| dynamic_cast<CSwing*>(objects[i])
+			|| dynamic_cast<CBlueFire*>(objects[i])
+			|| dynamic_cast<CGimmickDieEffect*>(objects[i])
+			|| dynamic_cast<CWorm*>(objects[i])
+			|| dynamic_cast<CBlackEnemy*>(objects[i])
+			|| dynamic_cast<CBrickPink*>(objects[i]))
+		{*/
+			vector<LPGAMEOBJECT> coObjects;
+			quadtree->Retrieve(&coObjects, objects[i]);
+			objects[i]->Update(dt, &coObjects);
+		/*}*/
+	}
+	// Làm trống quadtree
+	quadtree->Clear();
+
+
+
 
 	CGame* game = CGame::GetInstance();
 	
@@ -279,9 +333,9 @@ void CPlayScene::Update(DWORD dt)
 	{
 		cx = 760;
 	}*/
-	/*cy -= game->GetScreenHeight() / 2;*/
+	cy += game->GetScreenHeight() / 2;
 	cx -= game->GetScreenWidth() / 2;
-	CGame::GetInstance()->SetCamPos((int)cx, (int)192);
+	CGame::GetInstance()->SetCamPos((int)cx, (int)cy);
 	DebugOut(L"dt: %d \n",dt);
 }
 
@@ -311,6 +365,11 @@ void CPlayScene::Unload()
 
 	objects.clear();
 	player = NULL;
+
+	if (quadtree) {
+		delete quadtree;
+		quadtree = nullptr;
+	}
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

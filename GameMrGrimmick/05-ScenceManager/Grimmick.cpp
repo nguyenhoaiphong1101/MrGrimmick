@@ -223,7 +223,7 @@ void CGrimmick::GetBoundingBox(float &left, float &top, float &right, float &bot
 void CGrimmick::Reset()
 {
 	SetState(GRIMMICK_STATE_IDLE);
-	SetPosition(40, 170);
+	SetPosition(229, 122);
 	SetSpeed(0, 0);
 }
 

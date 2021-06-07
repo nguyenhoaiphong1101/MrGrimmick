@@ -9,6 +9,7 @@
 #include "Koopas.h"
 #include "Map.h"
 #include "Grid.h"
+#include "Quadtree.h"
 
 
 
@@ -18,6 +19,8 @@ protected:
 	Map* map;
 	CGrimmick* player;					// A play scene has to have player, right? 
 	vector<LPGAMEOBJECT> objects;
+
+	Quadtree* quadtree;
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
