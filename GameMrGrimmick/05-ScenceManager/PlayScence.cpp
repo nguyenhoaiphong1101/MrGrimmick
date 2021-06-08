@@ -149,8 +149,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
-		obj = new CGrimmick(x,y);
-		player = (CGrimmick*)obj;  
+		obj = new CGimmick(x,y);
+		player = (CGimmick*)obj;
 
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
@@ -280,7 +280,7 @@ void CPlayScene::Update(DWORD dt)
 
 
 	for (size_t i = 0; i < objects.size(); i++) {
-		if (dynamic_cast<CGrimmick*>(objects[i]))
+		if (dynamic_cast<CGimmick*>(objects[i]))
 			continue;
 		
 		quadtree->Insert(objects[i]);
@@ -296,7 +296,7 @@ void CPlayScene::Update(DWORD dt)
 	{
 		if (!CGame::GetInstance()->ObjectInCamera(objects[i]))
 			continue;
-		if (dynamic_cast<CGrimmick*>(objects[i]))
+		if (dynamic_cast<CGimmick*>(objects[i]))
 			continue;
 		/*if (dynamic_cast<CBoom*>(objects[i])
 			|| dynamic_cast<CSwing*>(objects[i])
@@ -323,20 +323,91 @@ void CPlayScene::Update(DWORD dt)
 	if (player == NULL) return; 
 
 	// Update camera to follow mario
-	float cx, cy;
+	SetCamPos();
+}
+
+
+
+void CPlayScene::SetCamPos() {
+
+	int ids = CGame::GetInstance()->GetCurrentScene()->GetId();
+
+		float cx, cy;
 	player->GetPosition(cx, cy);
 
+	CGame* game = CGame::GetInstance();
+	/*cx -= game->GetScreenWidth() / 2;
+	cy += game->GetScreenHeight() / 2;*/
 
-	/*if (cx < 760 + game->GetScreenWidth() / 2)
-	cx -= game->GetScreenWidth() / 2;
-	else
+	
+	switch (ids)
 	{
-		cx = 760;
-	}*/
-	cy += game->GetScreenHeight() / 2;
-	cx -= game->GetScreenWidth() / 2;
+	case 1:
+	{
+		if (cx < game->GetScreenWidth() / 2)
+		{
+			cx = 0;
+		}
+		else 
+		{
+			if (cx > 1024 - (game->GetScreenWidth() / 2))
+			{
+				cx = 759;
+			}
+			else
+			{
+				cx -= game->GetScreenWidth() / 2;
+
+			}
+		}
+		if (cy > 193)
+		{
+			cy = 384;
+		}
+		else
+		{
+			cy = 192;
+		}
+		break;
+	}
+	case 2:
+	{
+		if ((cx < game->GetScreenWidth() / 2))
+		{
+			cx=0;
+		}
+		else
+		{
+			if (cx > 512 - (game->GetScreenWidth() / 2)&&cy>172)
+			{
+				cx = 247;
+			}
+			else
+			{
+				cx -= game->GetScreenWidth() / 2;
+			}
+		}
+		if (cy > 193)
+		{
+			cy = 384;
+		}
+		else
+		{
+			cy = 192;
+		}
+		/*cx -= game->GetScreenWidth() / 2;
+		cy += game->GetScreenHeight() / 2;*/
+		break;
+	}
+	case 3:
+	{
+		break;
+	}
+	default:
+		break;
+	}
+	// Update camera to follow mario
 	CGame::GetInstance()->SetCamPos((int)cx, (int)cy);
-	DebugOut(L"dt: %d \n",dt);
 }
 
 void CPlayScene::Render()
@@ -378,7 +449,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
-	CGrimmick *grimmick = ((CPlayScene*)scence)->GetPlayer();
+	CGimmick* grimmick = ((CPlayScene*)scence)->GetPlayer();
 	switch (KeyCode)
 	{
 		
@@ -398,7 +469,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
-	CGrimmick* grimmick = ((CPlayScene*)scence)->GetPlayer();
+	CGimmick* grimmick = ((CPlayScene*)scence)->GetPlayer();
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
@@ -410,7 +481,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	CGame *game = CGame::GetInstance();
-	CGrimmick *grimmick = ((CPlayScene*)scence)->GetPlayer();
+	CGimmick* grimmick = ((CPlayScene*)scence)->GetPlayer();
 
 	// disable control key when Mario die 
 	if (grimmick->GetState() == GRIMMICK_STATE_DIE) return;

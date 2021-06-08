@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#include "Grimmick.h"
+#include "Gimmick.h"
 #define BLACKENEMY_WALKING_SPEED 0.01f;
 #define BLACKENEMY_GRAVITY 0.0008f
 #define BLACKENEMY_BBOX_WIDTH 16

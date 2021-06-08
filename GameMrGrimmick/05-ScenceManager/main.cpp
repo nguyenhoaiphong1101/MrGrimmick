@@ -20,7 +20,7 @@
 #include "GameObject.h"
 #include "Textures.h"
 
-#include "Grimmick.h"
+#include "Gimmick.h"
 #include "Brick.h"
 #include "Goomba.h"
 

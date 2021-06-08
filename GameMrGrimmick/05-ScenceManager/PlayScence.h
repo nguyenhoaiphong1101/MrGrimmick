@@ -4,7 +4,7 @@
 #include "Scence.h"
 #include "GameObject.h"
 #include "Brick.h"
-#include "Grimmick.h"
+#include "Gimmick.h"
 #include "Goomba.h"
 #include "Koopas.h"
 #include "Map.h"
@@ -17,7 +17,7 @@ class CPlayScene: public CScene
 {
 protected: 
 	Map* map;
-	CGrimmick* player;					// A play scene has to have player, right? 
+	CGimmick* player;					// A play scene has to have player, right? 
 	vector<LPGAMEOBJECT> objects;
 
 	Quadtree* quadtree;
@@ -39,7 +39,9 @@ public:
 	virtual void Render();
 	virtual void Unload();
 
-	CGrimmick* GetPlayer() { return player; }
+	void SetCamPos();
+
+	CGimmick* GetPlayer() { return player; }
 
 	//friend class CPlayScenceKeyHandler;
 };

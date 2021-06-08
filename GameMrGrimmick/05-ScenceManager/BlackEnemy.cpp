@@ -30,7 +30,7 @@ void BlackEnemy::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCO
 			min_ty = c->t; ny = c->ny; min_iy = i; rdy = c->dy;
 		}
 
-		if (dynamic_cast<CGrimmick*>(c->obj))
+		if (dynamic_cast<CGimmick*>(c->obj))
 		{
 			ny = -0.01f;
 		}

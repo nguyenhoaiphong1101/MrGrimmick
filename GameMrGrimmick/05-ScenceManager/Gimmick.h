@@ -37,7 +37,7 @@
 #define GRIMMICK_UNTOUCHABLE_TIME 5000
 
 
-class CGrimmick : public CGameObject
+class CGimmick : public CGameObject
 {
 	int jump = 0;
 	
@@ -49,7 +49,7 @@ class CGrimmick : public CGameObject
 public: 
 	int startJump = -1;
 	int holdJump = 0;
-	CGrimmick(float x = 0.0f, float y = 0.0f);
+	CGimmick(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
 	int GetJumping() { return jump; };

@@ -2,12 +2,12 @@
 #include <assert.h>
 #include "Utils.h"
 
-#include "Grimmick.h"
+#include "Gimmick.h"
 #include "Game.h"
 
 #include "Portal.h"
 
-CGrimmick::CGrimmick(float x, float y) : CGameObject()
+CGimmick::CGimmick(float x, float y) : CGameObject()
 {
 	untouchable = 0;
 	SetState(GRIMMICK_STATE_IDLE);
@@ -18,7 +18,7 @@ CGrimmick::CGrimmick(float x, float y) : CGameObject()
 	this->y = y; 
 }
 
-void CGrimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
+void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
@@ -135,7 +135,7 @@ void CGrimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
-void CGrimmick::Render()
+void CGimmick::Render()
 {
 	int ani = -1;
 
@@ -179,7 +179,7 @@ void CGrimmick::Render()
 	RenderBoundingBox();
 }
 
-void CGrimmick::SetState(int state)
+void CGimmick::SetState(int state)
 {
 	CGameObject::SetState(state);
 
@@ -209,7 +209,7 @@ void CGrimmick::SetState(int state)
 	}
 }
 
-void CGrimmick::GetBoundingBox(float &left, float &top, float &right, float &bottom)
+void CGimmick::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
 	left = x;
 	top = y;
@@ -220,10 +220,10 @@ void CGrimmick::GetBoundingBox(float &left, float &top, float &right, float &bot
 /*
 	Reset Mario status to the beginning state of a scene
 */
-void CGrimmick::Reset()
+void CGimmick::Reset()
 {
 	SetState(GRIMMICK_STATE_IDLE);
-	SetPosition(229, 122);
+	SetPosition(950, 122);
 	SetSpeed(0, 0);
 }
 
