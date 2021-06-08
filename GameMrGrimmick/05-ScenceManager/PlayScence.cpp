@@ -289,6 +289,8 @@ void CPlayScene::Update(DWORD dt)
 
 	// Update player
 	vector<LPGAMEOBJECT> coObjects;
+	
+
 	quadtree->Retrieve(&coObjects, player);
 	player->Update(dt, &coObjects);
 
@@ -307,11 +309,12 @@ void CPlayScene::Update(DWORD dt)
 			|| dynamic_cast<CBlackEnemy*>(objects[i])
 			|| dynamic_cast<CBrickPink*>(objects[i]))
 		{*/
-			vector<LPGAMEOBJECT> coObjects;
-			quadtree->Retrieve(&coObjects, objects[i]);
-			objects[i]->Update(dt, &coObjects);
+		vector<LPGAMEOBJECT> coObjectsUpdate;
+			quadtree->Retrieve(&coObjectsUpdate, objects[i]);
+			objects[i]->Update(dt, &coObjectsUpdate);
 		/*}*/
 	}
+	
 	// Làm trống quadtree
 	if(quadtree)
 	quadtree->Clear();
@@ -403,6 +406,22 @@ void CPlayScene::SetCamPos() {
 	}
 	case 3:
 	{
+		if (cx < game->GetScreenWidth() / 2)
+		{
+			cx = 0;
+		}
+		else
+		{
+			if (cx > 1024 - (game->GetScreenWidth() / 2))
+			{
+				cx = 759;
+			}
+			else
+			{
+				cx -= game->GetScreenWidth() / 2;
+			}
+		}
+		cy = 192;
 		break;
 	}
 	default:
