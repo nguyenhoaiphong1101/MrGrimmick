@@ -13,11 +13,12 @@ private:
     float r;
     float b;
 
-    Quadtree** m_nodes;
+   
     vector<LPGAMEOBJECT> m_objects_list;
     bool IsContain(CGameObject* object);
     void Split();
 public:
+    Quadtree** m_nodes;
     Quadtree(int level, float l, float t, float r, float b)
     {
         this->m_level = level;

@@ -282,7 +282,8 @@ void CPlayScene::Update(DWORD dt)
 	for (size_t i = 0; i < objects.size(); i++) {
 		if (dynamic_cast<CGimmick*>(objects[i]))
 			continue;
-		
+		if (dynamic_cast<CPortal*>(objects[i]))
+			continue;
 		quadtree->Insert(objects[i]);
 	}
 
@@ -312,6 +313,7 @@ void CPlayScene::Update(DWORD dt)
 		/*}*/
 	}
 	// Làm trống quadtree
+	if(quadtree)
 	quadtree->Clear();
 
 

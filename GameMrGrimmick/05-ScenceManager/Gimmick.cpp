@@ -4,6 +4,7 @@
 
 #include "Gimmick.h"
 #include "Game.h"
+#include "PlayScence.h"
 
 #include "Portal.h"
 
@@ -20,6 +21,7 @@ CGimmick::CGimmick(float x, float y) : CGameObject()
 
 void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	int ids = CGame::GetInstance()->GetCurrentScene()->GetId();
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
@@ -43,6 +45,16 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	if (ids == 1)
+	{
+		if (y < 0)
+		{
+			CPortal* p = new CPortal(2);
+			CGame::GetInstance()->SwitchScene(p->GetSceneId());
+			return;
+		}
+	}
 
 	coEvents.clear();
 
@@ -94,8 +106,9 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (e->ny > 0)
+			if (e->ny !=0 )
 			{
+				holdJump = 0;
 				jump = 0;
 			}
 

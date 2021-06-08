@@ -10,6 +10,15 @@ CPortal::CPortal(float l, float t, float r, float b, int scene_id )
 	height = b - t + 1;
 }
 
+CPortal::CPortal(int scene_id)
+{
+	this->scene_id = scene_id;
+	x = 0;
+	y = 0;
+	width = 0;
+	height = 0;
+}
+
 void CPortal::Render()
 {
 	RenderBoundingBox();
