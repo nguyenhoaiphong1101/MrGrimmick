@@ -16,8 +16,15 @@
 #include "NoCollisionObject.h"
 #include "Fish.h"
 #include "Slide.h"
-
-
+#include "BlackEnemy.h"
+#include "BoomBoss.h"
+#include "Electricboom.h"
+#include "Worm.h"
+#include "Window.h"
+#include "SuspensionBridge.h"
+#include "Rocket.h"
+#include "Bullet.h"
+#include "Star.h"
 
 class CPlayScene: public CScene
 {

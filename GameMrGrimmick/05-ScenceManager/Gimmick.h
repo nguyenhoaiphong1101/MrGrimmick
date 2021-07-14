@@ -46,6 +46,7 @@ class CGimmick : public CGameObject
 
 	float start_x;			// initial position of Mario at scene
 	float start_y; 
+	bool isOnBridge = false;
 public: 
 	int startJump = -1;
 	int holdJump = 0;
@@ -56,7 +57,7 @@ public:
 	void SetState(int state);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void SetJumping(int jump) { this->jump = jump; };
-
+	void SetOnBridge(bool isOnBridge) { this->isOnBridge = isOnBridge; };
 	void Reset();
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);

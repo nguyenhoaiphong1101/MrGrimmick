@@ -129,7 +129,9 @@
     <ClCompile Include="Boom.cpp" />
     <ClCompile Include="BoomBoss.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Cannon.cpp" />
+    <ClCompile Include="ElectricBoom.cpp" />
     <ClCompile Include="Fish.cpp" />
     <ClCompile Include="FloatBox.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -137,7 +139,10 @@
     <ClCompile Include="NoCollisionObject.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="Rocket.cpp" />
     <ClCompile Include="Slide.cpp" />
+    <ClCompile Include="Star.cpp" />
+    <ClCompile Include="SuspensionBridge.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -147,6 +152,7 @@
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
@@ -154,7 +160,9 @@
     <ClInclude Include="Boom.h" />
     <ClInclude Include="BoomBoss.h" />
     <ClInclude Include="Brick.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Cannon.h" />
+    <ClInclude Include="ElectricBoom.h" />
     <ClInclude Include="Fish.h" />
     <ClInclude Include="FloatBox.h" />
     <ClInclude Include="Item.h" />
@@ -162,7 +170,10 @@
     <ClInclude Include="NoCollisionObject.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="Rocket.h" />
     <ClInclude Include="Slide.h" />
+    <ClInclude Include="Star.h" />
+    <ClInclude Include="SuspensionBridge.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
@@ -172,6 +183,7 @@
     <ClInclude Include="Scence.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Textures.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
