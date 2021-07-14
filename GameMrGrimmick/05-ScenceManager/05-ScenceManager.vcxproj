@@ -126,10 +126,18 @@
   <ItemGroup>
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="BlackEnemy.cpp" />
+    <ClCompile Include="Boom.cpp" />
+    <ClCompile Include="BoomBoss.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="Cannon.cpp" />
+    <ClCompile Include="Fish.cpp" />
+    <ClCompile Include="FloatBox.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="NoCollisionObject.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="Slide.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -143,10 +151,18 @@
   <ItemGroup>
     <ClInclude Include="Animations.h" />
     <ClInclude Include="BlackEnemy.h" />
+    <ClInclude Include="Boom.h" />
+    <ClInclude Include="BoomBoss.h" />
     <ClInclude Include="Brick.h" />
+    <ClInclude Include="Cannon.h" />
+    <ClInclude Include="Fish.h" />
+    <ClInclude Include="FloatBox.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="NoCollisionObject.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="Slide.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
