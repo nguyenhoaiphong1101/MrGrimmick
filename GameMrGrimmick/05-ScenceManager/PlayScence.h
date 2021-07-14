@@ -10,6 +10,13 @@
 #include "Map.h"
 #include "Grid.h"
 #include "Quadtree.h"
+#include "Cannon.h"
+#include "FloatBox.h"
+#include "Item.h"
+#include "NoCollisionObject.h"
+#include "Fish.h"
+#include "Worm.h"
+#include "Slide.h"
 
 
 
