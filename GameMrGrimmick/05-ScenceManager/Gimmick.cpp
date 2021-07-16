@@ -28,8 +28,8 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	if(holdJump!=1 && !isIncline)
-	vy -= GIMMICK_GRAVITY*dt;
+	if (holdJump != 1 && !isIncline && !isPiping)
+		vy -= GIMMICK_GRAVITY * dt;
 
 
 	if (holdJump == 1)
@@ -61,7 +61,7 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	coEvents.clear();
 
 	// turn off collision when die 
-	if (state!= GIMMICK_STATE_DIE)
+	if (state != GIMMICK_STATE_DIE || !isPiping)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
@@ -76,7 +76,7 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// No collision occured, proceed normally
 	if (coEvents.size()==0)
 	{
-		x += dx; 
+		x += dx;
 		y += dy;
 		isIncline = false;
 	}
@@ -172,6 +172,17 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			else {
 				isIncline = false;
 			}
+			if (dynamic_cast<CPipes*>(e->obj)) {
+
+				CPipes* pipe = dynamic_cast<CPipes*>(e->obj);
+				isPiping = true;
+				x = pipe->x;
+				if (vy > 0) y += 0.1f;
+				else if (vy < 0)y -= 0.1f;
+			}
+			else {
+				isPiping = false;
+			}
 			if (dynamic_cast<Slide*>(e->obj))
 			{
 				Slide* slide = dynamic_cast<Slide*>(e->obj);
@@ -216,7 +227,7 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			//	CGame::GetInstance()->SwitchScene(p->GetSceneId());
 			//}
 		}
-		if (!isIncline) {
+		if (!isIncline && !isPiping) {
 
 			x += min_tx * dx + nx * 0.4f;
 			y += min_ty * dy + ny * 0.4f;
@@ -228,6 +239,10 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			x += dx;
 			if (isIncline) {
 				y += min_ty * dy + ny * 0.4f;
+			}
+			else if (isPiping)
+			{
+				y += dy;
 			}
 		}
 	}
