@@ -2,6 +2,8 @@
 #include "GameObject.h"
 
 #define GIMMICK_WALKING_SPEED		0.08f 
+#define GIMMICK_WALKING_SPEED_SLIDE_TRUE		0.1f 
+#define GIMMICK_WALKING_SPEED_SLIDE_FALSE		0.05f 
 
 #define GIMMICK_JUMP_SPEED_Y		0.2f
 #define GIMMICK_JUMP_STATE_SPEED_Y		0.00001f
@@ -28,6 +30,8 @@
 #define GIMMICK_STATE_INCLINE_DOWN	600
 #define GIMMICK_STATE_INCLINE_UP		700
 #define GIMMICK_STATE_AUTO_GO		1000
+#define GIMMICK_STATE_AUTO_GO_SLIDE_RIGHT		1001
+#define GIMMICK_STATE_AUTO_GO_SLIDE_LEFT		1002
 
 
 #define GIMMICK_ANI_IDLE_RIGHT		1
@@ -72,6 +76,12 @@ public:
 	// pipe
 	bool isPiping = false;		// checking gimmick is piping
 	float pipeVx, pipeVy;		// set speed when piping
+
+
+	// silde
+	bool isSlide = false;
+	int isDirSlide = 0;
+	int slideType = 0;
 
 	float incline_vx, incline_vy;
 

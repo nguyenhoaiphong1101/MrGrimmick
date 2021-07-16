@@ -1,9 +1,7 @@
 [SETTINGS]
-<<<<<<< Updated upstream
+
 start	2
-=======
-start	1
->>>>>>> Stashed changes
+
 #scene list
 [SCENES]
 1	scene1-a.txt

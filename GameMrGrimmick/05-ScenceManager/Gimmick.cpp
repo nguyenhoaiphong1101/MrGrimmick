@@ -24,6 +24,8 @@ CGimmick::CGimmick(float x, float y) : CGameObject()
 void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	int ids = CGame::GetInstance()->GetCurrentScene()->GetId();
+
+
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
@@ -185,49 +187,23 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 			if (dynamic_cast<Slide*>(e->obj))
 			{
+				isSlide =true;
 				Slide* slide = dynamic_cast<Slide*>(e->obj);
-			
 					if (slide->GetType() == SLIDE_TYPE_LEFT)
 					{
-						x -= dt * SLIDE_WALKING_SPEED;
+						slideType = -1;
 					}
 					else if (slide->GetType() == SLIDE_TYPE_RIGHT)
 					{
-						x += dt * SLIDE_WALKING_SPEED;
+						slideType = 1;
 					}
 			}
-
-			//if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
-			//{
-			//	CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
-
-			//	// jump on top >> kill Goomba and deflect a bit 
-			//	if (e->ny < 0)
-			//	{
-			//		if (goomba->GetState()!= GOOMBA_STATE_DIE)
-			//		{
-			//			goomba->SetState(GOOMBA_STATE_DIE);
-			//			vy = -GRIMMICK_JUMP_DEFLECT_SPEED;
-			//		}
-			//	}
-			//	else if (e->nx != 0)
-			//	{
-			//		if (untouchable==0)
-			//		{
-			//			if (goomba->GetState()!=GOOMBA_STATE_DIE)
-			//			{
-			//					SetState(GRIMMICK_STATE_DIE);
-			//			}
-			//		}
-			//	}
-			//} // if Goomba
-			//else if (dynamic_cast<CPortal *>(e->obj))
-			//{
-			//	CPortal *p = dynamic_cast<CPortal *>(e->obj);
-			//	CGame::GetInstance()->SwitchScene(p->GetSceneId());
-			//}
+			else
+			{
+				isSlide = false;
+			}
 		}
-		if (!isIncline && !isPiping) {
+		if (!isIncline && !isPiping && !isSlide) { 
 
 			x += min_tx * dx + nx * 0.4f;
 			y += min_ty * dy + ny * 0.4f;
@@ -237,7 +213,7 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 		else {
 			x += dx;
-			if (isIncline) {
+			if (isIncline || isSlide) {
 				y += min_ty * dy + ny * 0.4f;
 			}
 			else if (isPiping)
@@ -310,7 +286,15 @@ void CGimmick::Render()
 			ani = GIMMICK_ANI_IDLE_RIGHT;
 		else
 			ani = GIMMICK_ANI_IDLE_LEFT;
-	} 
+	}
+	else if (state == GIMMICK_STATE_AUTO_GO_SLIDE_RIGHT)
+	{
+		ani = GIMMICK_ANI_WALKING_RIGHT;
+	}
+	else if (state == GIMMICK_STATE_AUTO_GO_SLIDE_LEFT)
+	{
+		ani = GIMMICK_ANI_WALKING_LEFT;
+	}
 	else //if (state == GIMMICK_STATE_AUTO_GO)
 	{
 		if (key_down == 1)
@@ -338,8 +322,7 @@ void CGimmick::KeyState(BYTE* state)
 
 		key_down = 1;
 
-		if (!isIncline) {
-
+		if (!isIncline && !isSlide) {
 			SetState(GIMMICK_STATE_WALKING_RIGHT);
 		}
 		else if (isIncline) {
@@ -351,12 +334,16 @@ void CGimmick::KeyState(BYTE* state)
 			else
 				SetState(GIMMICK_STATE_INCLINE_DOWN);
 		}
+		else if (isSlide)
+		{
+			SetState(GIMMICK_STATE_AUTO_GO_SLIDE_RIGHT);
+		}
 	}
 	else if (game->IsKeyDown(DIK_LEFT)) {
 
 		key_down = -1;
 
-		if (!isIncline) {
+		if (!isIncline && !isSlide) {
 
 			SetState(GIMMICK_STATE_WALKING_LEFT);
 		}
@@ -369,12 +356,13 @@ void CGimmick::KeyState(BYTE* state)
 
 			else
 				SetState(GIMMICK_STATE_INCLINE_DOWN);
+		} if (isSlide)
+		{
+			SetState(GIMMICK_STATE_AUTO_GO_SLIDE_LEFT);
 		}
 	}
-	else if (isIncline) {
-
+	else if (isIncline||isSlide) {
 		//gimmick->key_down = 0;
-
 		SetState(GIMMICK_STATE_AUTO_GO);
 	}
 	else if (vy == 0 /*&& gimmick->vx != 0*/) {
@@ -398,6 +386,28 @@ void CGimmick::SetState(int state)
 	case GIMMICK_STATE_WALKING_RIGHT:
 		vx = GIMMICK_WALKING_SPEED;
 		nx = 1;
+		break;
+	case GIMMICK_STATE_AUTO_GO_SLIDE_RIGHT:
+		if (slideType == 1)
+		{
+			vx = GIMMICK_WALKING_SPEED_SLIDE_TRUE;
+		}
+		else
+		{
+			vx = GIMMICK_WALKING_SPEED_SLIDE_FALSE;
+		}
+		nx = 1;
+		break;
+	case GIMMICK_STATE_AUTO_GO_SLIDE_LEFT:
+		if (slideType == -1)
+		{
+			vx = -GIMMICK_WALKING_SPEED_SLIDE_TRUE;
+		}
+		else
+		{
+			vx = -GIMMICK_WALKING_SPEED_SLIDE_FALSE;
+		}
+		nx = -1;
 		break;
 	case GIMMICK_STATE_WALKING_LEFT:
 		vx = -GIMMICK_WALKING_SPEED;
@@ -478,6 +488,17 @@ void CGimmick::SetState(int state)
 		if (isIncline) {
 			vx = incline_vx;
 			vy = incline_vy;
+		}
+		else if (isSlide)
+		{
+			if (slideType==1)
+			{
+				vx = GIMMICK_WALKING_SPEED;
+			}
+			else
+			{
+				vx = -GIMMICK_WALKING_SPEED;
+			}
 		}
 		break;
 	}
