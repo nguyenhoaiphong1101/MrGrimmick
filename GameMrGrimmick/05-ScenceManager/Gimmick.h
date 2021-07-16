@@ -1,4 +1,4 @@
-#pragma once
+	#pragma once
 #include "GameObject.h"
 
 #define GIMMICK_WALKING_SPEED		0.08f 
@@ -68,6 +68,10 @@ public:
 	int direct_incline;
 	int direct_go;						// trend of slide
 	int key_down = 0;
+
+	// pipe
+	bool isPiping = false;		// checking gimmick is piping
+	float pipeVx, pipeVy;		// set speed when piping
 
 	float incline_vx, incline_vy;
 
