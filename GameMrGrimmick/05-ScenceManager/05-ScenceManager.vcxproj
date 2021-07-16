@@ -134,6 +134,7 @@
     <ClCompile Include="ElectricBoom.cpp" />
     <ClCompile Include="Fish.cpp" />
     <ClCompile Include="FloatBox.cpp" />
+    <ClCompile Include="Incline.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="NoCollisionObject.cpp" />
@@ -165,11 +166,13 @@
     <ClInclude Include="ElectricBoom.h" />
     <ClInclude Include="Fish.h" />
     <ClInclude Include="FloatBox.h" />
+    <ClInclude Include="Incline.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="NoCollisionObject.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="Rocket.h" />
     <ClInclude Include="Slide.h" />
     <ClInclude Include="Star.h" />
@@ -184,6 +187,9 @@
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="05-ScenceManager1.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -59,6 +59,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_FISH_BLACK	61
 #define OBJECT_TYPE_FISH_YELLOW	62
 #define OBJECT_TYPE_STAR	21
+#define OBJECT_TYPE_INCLINE	22
 
 #define MAX_SCENE_LINE 1024
 
@@ -201,6 +202,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_FISH_BLACK: obj = new Fish(FISH_TYPE_BLACK); break;
 	case OBJECT_TYPE_FISH_YELLOW: obj = new Fish(FISH_TYPE_YELLOW); break;
 	case OBJECT_TYPE_BULLET: obj = new Bullet(); break;
+	case OBJECT_TYPE_INCLINE:
+	{
+		float d = atof(tokens[4].c_str());
+		float s = atof(tokens[5].c_str());
+
+		obj = new Incline(x, y, d, s);
+		break;
+	}
 	case OBJECT_TYPE_NOCOLLISIONOBJECT: obj = new NoCollisionObject(); break;
 	case OBJECT_TYPE_PORTAL:
 		{	
@@ -524,7 +533,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		if (grimmick->GetJumping() == 0)
 		{
 			grimmick->startJump = grimmick->y;
-        	grimmick->SetState(GRIMMICK_STATE_JUMP);
+        	grimmick->SetState(GIMMICK_STATE_JUMP);
 			grimmick->holdJump = 1;
 		}
 		break;
@@ -547,19 +556,25 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
-	CGame *game = CGame::GetInstance();
-	CGimmick* grimmick = ((CPlayScene*)scence)->GetPlayer();
+	//CGame *game = CGame::GetInstance();
+	//CGimmick* grimmick = ((CPlayScene*)scence)->GetPlayer();
 
-	// disable control key when Mario die 
-	if (grimmick->GetState() == GRIMMICK_STATE_DIE) return;
-	if (game->IsKeyDown(DIK_RIGHT))
-		grimmick->SetState(GRIMMICK_STATE_WALKING_RIGHT);
-	else if (game->IsKeyDown(DIK_LEFT))
-		grimmick->SetState(GRIMMICK_STATE_WALKING_LEFT);
-	else 
-		grimmick->SetState(GRIMMICK_STATE_IDLE);
+	//// disable control key when Mario die 
+	//if (grimmick->GetState() == GIMMICK_STATE_DIE) return;
+	//if (game->IsKeyDown(DIK_RIGHT))
+	//	grimmick->SetState(GIMMICK_STATE_WALKING_RIGHT);
+	//else if (game->IsKeyDown(DIK_LEFT))
+	//	grimmick->SetState(GIMMICK_STATE_WALKING_LEFT);
+	//else 
+	//	grimmick->SetState(GIMMICK_STATE_IDLE);
 	/*if (game->IsKeyDown(DIK_SPACE))
 	{
 		grimmick->SetState(GRIMMICK_STATE_HOLD_JUMP);
 	}*/
+	CGame* game = CGame::GetInstance();
+
+	CGimmick* gimmick = ((CPlayScene*)scence)->GetPlayer();
+
+	gimmick->KeyState(states);
+
 }

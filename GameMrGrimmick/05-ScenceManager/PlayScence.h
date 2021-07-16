@@ -25,6 +25,7 @@
 #include "Rocket.h"
 #include "Bullet.h"
 #include "Star.h"
+#include "Incline.h"
 
 class CPlayScene: public CScene
 {
