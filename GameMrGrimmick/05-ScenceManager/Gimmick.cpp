@@ -8,6 +8,7 @@
 #include "PlayScence.h"
 
 #include "Portal.h"
+#include "Slide.h"
 
 CGimmick::CGimmick(float x, float y) : CGameObject()
 {
@@ -170,6 +171,19 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 			else {
 				isIncline = false;
+			}
+			if (dynamic_cast<Slide*>(e->obj))
+			{
+				Slide* slide = dynamic_cast<Slide*>(e->obj);
+			
+					if (slide->GetType() == SLIDE_TYPE_LEFT)
+					{
+						x -= dt * SLIDE_WALKING_SPEED;
+					}
+					else if (slide->GetType() == SLIDE_TYPE_RIGHT)
+					{
+						x += dt * SLIDE_WALKING_SPEED;
+					}
 			}
 
 			//if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 

@@ -1,5 +1,7 @@
 
 #include "Bullet.h"
+#include "Incline.h"
+
 Bullet::Bullet()
 {
 	SetState(BULLET_STATE_FALLING);
@@ -62,12 +64,6 @@ void Bullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (e->nx != 0 && ny == 0)
-			{
-				this->vx = -this->vx;
-				this->nx = -this->nx;
-
-			}
 		}
 	}
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Gimmick.h"
-#define SLIDE_WALKING_SPEED 0.01f;
+#define SLIDE_WALKING_SPEED 0.1f;
 
 #define SLIDE_BBOX_WIDTH 16
 #define SLIDE_BBOX_HEIGHT 15
