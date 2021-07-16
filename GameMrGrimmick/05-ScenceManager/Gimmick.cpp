@@ -8,27 +8,28 @@
 #include "PlayScence.h"
 
 #include "Portal.h"
+#include "Slide.h"
 
 CGimmick::CGimmick(float x, float y) : CGameObject()
 {
 	untouchable = 0;
 	SetState(GIMMICK_STATE_IDLE);
 
-	start_x = x;
-	start_y = y;
-	this->x = x;
-	this->y = y;
+	start_x = x; 
+	start_y = y; 
+	this->x = x; 
+	this->y = y; 
 }
 
-void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	int ids = CGame::GetInstance()->GetCurrentScene()->GetId();
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	if (holdJump != 1 && !isIncline && !isPiping)
-		vy -= GIMMICK_GRAVITY * dt;
+	if(holdJump!=1 && !isIncline)
+	vy -= GIMMICK_GRAVITY*dt;
 
 
 	if (holdJump == 1)
@@ -42,7 +43,7 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
-
+	
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -60,29 +61,29 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	coEvents.clear();
 
 	// turn off collision when die 
-	if (state != GIMMICK_STATE_DIE || !isPiping)
+	if (state!= GIMMICK_STATE_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
-	if (GetTickCount() - untouchable_start > GIMMICK_UNTOUCHABLE_TIME)
+	if ( GetTickCount() - untouchable_start > GIMMICK_UNTOUCHABLE_TIME)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
 	}
 
 
-
+	
 	// No collision occured, proceed normally
-	if (coEvents.size() == 0)
+	if (coEvents.size()==0)
 	{
-		x += dx;
+		x += dx; 
 		y += dy;
 		isIncline = false;
 	}
 	else
 	{
 		float min_tx, min_ty, nx = 0, ny;
-		float rdx = 0;
+		float rdx = 0; 
 		float rdy = 0;
 
 		// TODO: This is a very ugly designed function!!!!
@@ -95,7 +96,7 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (e->ny != 0)
+			if (e->ny !=0 )
 			{
 				holdJump = 0;
 				jump = 0;
@@ -123,15 +124,15 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						direct_incline = -1;
 					}
 				}
-				else if ((CGame::GetInstance()->IsKeyDown(DIK_LEFT))
+				else if (( CGame::GetInstance()->IsKeyDown(DIK_LEFT))
 					|| GetState() == GIMMICK_STATE_WALKING_LEFT) {
-					direct_go = -1;
-					if (incline->direct == 1) {
-						direct_incline = 1;
-					}
-					else {
-						direct_incline = -1;
-					}
+							direct_go = -1;
+							if (incline->direct == 1) {
+								direct_incline = 1;
+							}
+							else {
+								direct_incline = -1;
+							}
 				}
 				else {
 					if (incline->direct == 1) {
@@ -171,19 +172,51 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else {
 				isIncline = false;
 			}
-			if (dynamic_cast<CPipes*>(e->obj)) {
+			if (dynamic_cast<Slide*>(e->obj))
+			{
+				Slide* slide = dynamic_cast<Slide*>(e->obj);
+			
+					if (slide->GetType() == SLIDE_TYPE_LEFT)
+					{
+						x -= dt * SLIDE_WALKING_SPEED;
+					}
+					else if (slide->GetType() == SLIDE_TYPE_RIGHT)
+					{
+						x += dt * SLIDE_WALKING_SPEED;
+					}
+			}
 
-				CPipes* pipe = dynamic_cast<CPipes*>(e->obj);
-				isPiping = true;
-				x = pipe->x;
-				if (vy > 0) y += 0.1f;
-				else if (vy < 0)y -= 0.1f;
-			}
-			else {
-				isPiping = false;
-			}
+			//if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
+			//{
+			//	CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
+
+			//	// jump on top >> kill Goomba and deflect a bit 
+			//	if (e->ny < 0)
+			//	{
+			//		if (goomba->GetState()!= GOOMBA_STATE_DIE)
+			//		{
+			//			goomba->SetState(GOOMBA_STATE_DIE);
+			//			vy = -GRIMMICK_JUMP_DEFLECT_SPEED;
+			//		}
+			//	}
+			//	else if (e->nx != 0)
+			//	{
+			//		if (untouchable==0)
+			//		{
+			//			if (goomba->GetState()!=GOOMBA_STATE_DIE)
+			//			{
+			//					SetState(GRIMMICK_STATE_DIE);
+			//			}
+			//		}
+			//	}
+			//} // if Goomba
+			//else if (dynamic_cast<CPortal *>(e->obj))
+			//{
+			//	CPortal *p = dynamic_cast<CPortal *>(e->obj);
+			//	CGame::GetInstance()->SwitchScene(p->GetSceneId());
+			//}
 		}
-		if (!isIncline && !isPiping) {
+		if (!isIncline) {
 
 			x += min_tx * dx + nx * 0.4f;
 			y += min_ty * dy + ny * 0.4f;
@@ -195,10 +228,6 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			x += dx;
 			if (isIncline) {
 				y += min_ty * dy + ny * 0.4f;
-			}
-			else if (isPiping)
-			{
-				y += dy;
 			}
 		}
 	}
@@ -231,11 +260,11 @@ void CGimmick::Render()
 		else
 			ani = GIMMICK_ANI_JUMPING_LEFT;
 	}
-	else if (state == GIMMICK_STATE_WALKING_RIGHT)
+	else if(state == GIMMICK_STATE_WALKING_RIGHT )
 	{
 		ani = GIMMICK_ANI_WALKING_RIGHT;
 	}
-	else if (state == GIMMICK_STATE_WALKING_LEFT)
+	else if (state == GIMMICK_STATE_WALKING_LEFT )
 	{
 		ani = GIMMICK_ANI_WALKING_LEFT;
 	}
@@ -266,7 +295,7 @@ void CGimmick::Render()
 			ani = GIMMICK_ANI_IDLE_RIGHT;
 		else
 			ani = GIMMICK_ANI_IDLE_LEFT;
-	}
+	} 
 	else //if (state == GIMMICK_STATE_AUTO_GO)
 	{
 		if (key_down == 1)
@@ -341,7 +370,7 @@ void CGimmick::KeyState(BYTE* state)
 	}
 
 
-
+	
 }
 
 
@@ -440,11 +469,11 @@ void CGimmick::SetState(int state)
 
 }
 
-void CGimmick::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void CGimmick::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
 	left = x;
 	top = y;
-	right = x + GIMMICK_BIG_BBOX_WIDTH;
+	right = x + GIMMICK_BIG_BBOX_WIDTH ;
 	bottom = y - GIMMICK_BIG_BBOX_HEIGHT;
 }
 
