@@ -60,6 +60,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_FISH_YELLOW	62
 #define OBJECT_TYPE_STAR	21
 #define OBJECT_TYPE_INCLINE	22
+#define OBJECT_TYPE_PIPES	23
 
 #define MAX_SCENE_LINE 1024
 
@@ -208,6 +209,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float s = atof(tokens[5].c_str());
 
 		obj = new Incline(x, y, d, s);
+		break;
+	}
+	case OBJECT_TYPE_PIPES:
+	{
+		int w = atof(tokens[4].c_str());
+		int h = atof(tokens[5].c_str());
+
+		obj = new CPipes(x, y, w, h);
 		break;
 	}
 	case OBJECT_TYPE_NOCOLLISIONOBJECT: obj = new NoCollisionObject(); break;
@@ -438,18 +447,26 @@ void CPlayScene::SetCamPos() {
 		}
 		else
 		{
-			if (cx > 512 - (game->GetScreenWidth() / 2)&&cy>172)
+			if (cx > 512 - (game->GetScreenWidth() / 2)&&cx<1265&& cy>172)
 			{
 				cx = 247;
 			}
 			else
 			{
+				if (cx > 1265)
+				{
+					cx = 1265;
+				}
+				else
 				cx -= game->GetScreenWidth() / 2;
 			}
 		}
 		if (cy > 193)
-		{
-			cy = 384;
+		{	
+			if (cy < 384)
+				cy = 384;
+			else
+				cy = 560;
 		}
 		else
 		{
