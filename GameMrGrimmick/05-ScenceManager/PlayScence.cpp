@@ -183,7 +183,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_BLACKENEMY: obj = new BlackEnemy(); break;
-	//case OBJECT_TYPE_WORM: obj = new Worm(); break;
+	case OBJECT_TYPE_WORM: obj = new Worm(); break;
 	case OBJECT_TYPE_ELECTRICBOOM: obj = new ElectricBoom(); break;
 	case OBJECT_TYPE_BOOMBOSS: obj = new BoomBoss(); break;
 	case OBJECT_TYPE_SLIDE_LEFT: obj = new Slide(SLIDE_TYPE_LEFT); break;
