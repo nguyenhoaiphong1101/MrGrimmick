@@ -1,5 +1,6 @@
 #include "BlackEnemy.h"
-#include "BLACKENEMY.h"
+#include "Incline.h"
+#include "Game.h"
 BlackEnemy::BlackEnemy()
 {
 	SetState(BLACKENEMY_STATE_WALKING);
@@ -55,7 +56,8 @@ void BlackEnemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
 	// Simple fall down
-	vy -= BLACKENEMY_GRAVITY * dt;
+	if (!isIncline)
+		vy -= BLACKENEMY_GRAVITY * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -75,6 +77,7 @@ void BlackEnemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		x += dx;
 		y += dy;
+		isIncline = false;
 
 	}
 	else
@@ -86,11 +89,11 @@ void BlackEnemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float rdy = 0;
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		x += min_tx * dx + nx * 0.4f;
-		y += min_ty * dy + ny * 0.4f;
+		//x += min_tx * dx + nx * 0.4f;
+		//y += min_ty * dy + ny * 0.4f;
 
-		/*if (nx!=0) vx = 0;*/
-		if (ny != 0) vy = 0;
+		///*if (nx!=0) vx = 0;*/
+		//if (ny != 0) vy = 0;
 
 
 
@@ -101,11 +104,64 @@ void BlackEnemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (e->nx != 0 && ny == 0)
-			{
-				this->vx = -this->vx;
-				this->nx = -this->nx;
+			
+			if (dynamic_cast<Incline*>(e->obj)) {
 
+				isIncline = true;
+
+				float tran_y = -99999;
+
+				Incline* incline = dynamic_cast<Incline*>(e->obj);
+
+				if (incline->size == 1)
+					incline_size = 1;
+				else
+					incline_size = 2;
+
+				if (vx > 0)
+				{
+					direct_go = 1;
+					if (incline->direct == 1) {
+						SetState(BLACKENEMY_STATE_INCLINE_UP);
+					}
+					else {
+						SetState(BLACKENEMY_STATE_INCLINE_DOWN);
+					}
+				}
+				else
+				{
+					direct_go = -1;
+					if (incline->direct == 1) {
+						SetState(BLACKENEMY_STATE_INCLINE_DOWN);
+					}
+					else {
+						SetState(BLACKENEMY_STATE_INCLINE_UP);
+					}
+				}
+			}
+			/*if (!dynamic_cast<Incline*>(e->obj))
+				if (e->nx != 0&& e->ny>5)
+				{
+					this->vx = -this->vx;
+					this->nx = -this->nx;
+				}*/
+			else {
+				isIncline = false;
+				SetState(BLACKENEMY_STATE_WALKING);
+			}
+		}
+		if (!isIncline) {
+
+			x += min_tx * dx + nx * 0.4f;
+			y += min_ty * dy + ny * 0.4f;
+
+			/*if (nx != 0) vx = 0;*/
+			if (ny != 0) vy = 0;
+		}
+		else {
+			x += dx;
+			if (isIncline) {
+				y += min_ty * dy + ny * 0.4f;
 			}
 		}
 	}
@@ -119,9 +175,9 @@ void BlackEnemy::Render()
 	int ani = BLACKENEMY_ANI_WALK_RIGHT;
 	if (state == BLACKENEMY_STATE_WALKING)
 	{
-		if (nx > 0)
+		if (vx > 0)
 			ani = BLACKENEMY_ANI_WALK_RIGHT;
-		else
+		else 
 			ani = BLACKENEMY_ANI_WALK_LEFT;
 	}
 	else if (state == BLACKENEMY_STATE_FLYING)
@@ -156,5 +212,63 @@ void BlackEnemy::SetState(int state)
 		{
 			vx = BLACKENEMY_WALKING_SPEED;
 		}
+		break;
+	case BLACKENEMY_STATE_INCLINE_UP:
+	{
+		if (direct_go == 1)
+		{
+			if (incline_size == 1) {
+				vx = BLACKENEMY_INCLINE_UP_SPEED_X_1;
+				vy = BLACKENEMY_INCLINE_UP_SPEED_Y_1;
+			}
+			else {
+				vx = BLACKENEMY_INCLINE_UP_SPEED_X_2;
+				vy = BLACKENEMY_INCLINE_UP_SPEED_Y_2;
+			}
+		}
+		else //if (direct_go == -1)
+		{
+			if (incline_size == 1) {
+				vx = -BLACKENEMY_INCLINE_UP_SPEED_X_1;
+				vy = BLACKENEMY_INCLINE_UP_SPEED_Y_1;
+			}
+			else {
+				vx = -BLACKENEMY_INCLINE_UP_SPEED_X_2;
+				vy = BLACKENEMY_INCLINE_UP_SPEED_Y_2;
+			}
+		}
 	}
+	break;
+
+	case BLACKENEMY_STATE_INCLINE_DOWN:
+	{
+		if (direct_go == 1)
+		{
+			if (incline_size == 1) {
+
+				vx = BLACKENEMY_INCLINE_DOWN_SPEED_X_1;
+				vy = -BLACKENEMY_INCLINE_DOWN_SPEED_Y_1;
+			}
+			else {
+				vx = BLACKENEMY_INCLINE_DOWN_SPEED_X_2;
+				vy = -BLACKENEMY_INCLINE_DOWN_SPEED_Y_2;
+			}
+		}
+		else if (direct_go == -1)
+		{
+			if (incline_size == 1) {
+
+				vx = -BLACKENEMY_INCLINE_DOWN_SPEED_X_1;
+				vy = -BLACKENEMY_INCLINE_DOWN_SPEED_Y_1;
+			}
+			else {
+
+				vx = -BLACKENEMY_INCLINE_DOWN_SPEED_X_2;
+				vy = -BLACKENEMY_INCLINE_DOWN_SPEED_Y_2;
+			}
+		}
+	}
+	break;
+	}
+
 }
