@@ -58,6 +58,9 @@ public:
 	int IsKeyDown(int KeyCode);
 	void ProcessKeyboard();
 
+	bool isSwitchScene = false;
+	float playerX = 0, playerY = 0;
+
 	void Load(LPCWSTR gameFile);
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	void SwitchScene(int scene_id);

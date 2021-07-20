@@ -154,6 +154,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
 
+
 	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
 
 	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
@@ -164,22 +165,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	int ani_set_id = atoi(tokens[3].c_str());
 
-	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
-	CGameObject *obj = NULL;
+	CGameObject* obj = NULL;
 
 	switch (object_type)
 	{
 	case OBJECT_TYPE_GRIMMICK:
-		if (player!=NULL) 
-		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
-			return;
-		}
-		obj = new CGimmick(x,y);
+	{
+		obj = new CGimmick(x, y);
 		player = (CGimmick*)obj;
-
 		DebugOut(L"[INFO] Player object created!\n");
+	}
 		break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_BLACKENEMY: obj = new BlackEnemy(); break;
@@ -221,19 +218,22 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_NOCOLLISIONOBJECT: obj = new NoCollisionObject(); break;
 	case OBJECT_TYPE_PORTAL:
-		{	
-			float r = atof(tokens[4].c_str());
-			float b = atof(tokens[5].c_str());
-			int scene_id = atoi(tokens[6].c_str());
-			obj = new CPortal(x, y, r, b, scene_id);
-		}
-		break;
+	{
+		float r = atof(tokens[4].c_str());
+		float b = atof(tokens[5].c_str());
+		int scene_id = atoi(tokens[6].c_str());
+		float oldX = atof(tokens[7].c_str());
+		float oldY = atof(tokens[8].c_str());
+		obj = new CPortal(x, y, r, b, scene_id, oldX, oldY);
+	}
+	break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
 	}
 
 	// General object setup
+	if(object_type!= OBJECT_TYPE_GRIMMICK)
 	obj->SetPosition(x, y);
 
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -241,7 +241,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
 }
-
 void CPlayScene::_ParseSection_MAP(string line)
 {
 	vector<string> tokens = split(line);
@@ -346,8 +345,8 @@ void CPlayScene::Update(DWORD dt)
 	for (size_t i = 0; i < objects.size(); i++) {
 		if (dynamic_cast<CGimmick*>(objects[i]))
 			continue;
-		if (dynamic_cast<CPortal*>(objects[i]))
-			continue;
+		/*if (dynamic_cast<CPortal*>(objects[i]))
+			continue;*/
 		quadtree->Insert(objects[i]);
 	}
 

@@ -57,15 +57,17 @@
 
 class CGimmick : public CGameObject
 {
+
+public: 
 	int jump = 0;
-	
+
 	int untouchable;
 	DWORD untouchable_start;
 
 	float start_x;			// initial position of Mario at scene
-	float start_y; 
+	float start_y;
 	bool isOnBridge = false;
-public: 
+public:
 	//Incline
 	bool isIncline = false;				// check for sliding
 	int incline_size;						// size of slide
@@ -89,9 +91,16 @@ public:
 	//
 	int startJump = -1;
 	int holdJump = 0;
+
+
+public:
+
+
 	CGimmick(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
 	int GetJumping() { return jump; };
 	void SetState(int state);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
@@ -103,5 +112,4 @@ public:
 	void OnKeyDown(int keyCode);
 	void OnKeyUp(int keyCode);
 
-	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 };

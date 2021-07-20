@@ -18,7 +18,7 @@ class CPortal : public CGameObject
 	float oldX = 0;
 	float oldY = 0;
 public:
-	CPortal(float l, float t, float r, float b, int scene_id);
+	CPortal(float l, float t, float r, float b, int scene_id, float ox, float oy);
 	CPortal(int scene_id);
 	CPortal(float l, float t, int scene_id);
 	virtual void Render();
