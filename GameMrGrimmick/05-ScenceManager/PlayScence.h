@@ -8,6 +8,7 @@
 #include "Goomba.h"
 #include "Koopas.h"
 #include "Map.h"
+#include "MovingBrick.h"
 #include "Grid.h"
 #include "Quadtree.h"
 #include "Cannon.h"

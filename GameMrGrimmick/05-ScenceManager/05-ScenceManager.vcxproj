@@ -137,6 +137,7 @@
     <ClCompile Include="Incline.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MovingBrick.cpp" />
     <ClCompile Include="NoCollisionObject.cpp" />
     <ClCompile Include="Pipes.cpp" />
     <ClCompile Include="Portal.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Incline.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MovingBrick.h" />
     <ClInclude Include="NoCollisionObject.h" />
     <ClInclude Include="Pipes.h" />
     <ClInclude Include="Portal.h" />

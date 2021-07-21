@@ -32,16 +32,36 @@ CGimmick::CGimmick(float x, float y) : CGameObject()
 	}
 }
 
+void CGimmick::FollowObject(LPGAMEOBJECT obj)
+{
+	vx = obj->GetVx();
+	//x = obj->GetX();
+	y = obj->GetY() + GIMMICK_BIG_BBOX_HEIGHT + 0.4f;
+}
+
+
+
 void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	int ids = CGame::GetInstance()->GetCurrentScene()->GetId();
 
+	if (GetState() != GIMMICK_STATE_IDLE) {
 
+		isFollow = false;
+	}
+
+	if (isFollow) {
+
+		FollowObject(obj);
+	}
+	else {
+		obj = NULL;
+	}
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	if (holdJump != 1 && !isIncline && !isPiping)
+	if (holdJump != 1 && !isIncline && !isPiping && !isFollow)
 		vy -= GIMMICK_GRAVITY * dt;
 
 
@@ -77,7 +97,7 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 
 	// No collision occured, proceed normally
-	if (coEvents.size() == 0)
+	if (coEvents.size() == 0 && !isFollow)
 	{
 		x += dx;
 		y += dy;
@@ -202,6 +222,19 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else
 			{
 				isSlide = false;
+			}
+			if (dynamic_cast<CMovingBrick*>(e->obj)) {
+
+				CMovingBrick* mb = dynamic_cast<CMovingBrick*>(e->obj);
+
+				if (e->t > 0 && e->t <= 1)
+
+					if (e->ny > 0) {
+
+						isFollow = true;
+						obj = mb;
+					}
+
 			}
 			if (dynamic_cast<CPortal*>(e->obj)) {
 					CPortal* p = dynamic_cast<CPortal*>(e->obj);

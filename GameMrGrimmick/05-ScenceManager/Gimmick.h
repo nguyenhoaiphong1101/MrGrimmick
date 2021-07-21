@@ -68,6 +68,10 @@ public:
 	float start_y;
 	bool isOnBridge = false;
 public:
+	CGameObject* obj = NULL;			// follow this obj if was idle state
+	bool isFollow = false;
+
+
 	//Incline
 	bool isIncline = false;				// check for sliding
 	int incline_size;						// size of slide
@@ -100,7 +104,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-
+	void FollowObject(LPGAMEOBJECT obj);
 	int GetJumping() { return jump; };
 	void SetState(int state);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }

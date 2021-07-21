@@ -47,6 +47,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define	OBJECT_TYPE_MEDICINE_PINK_BOMB 14
 #define	OBJECT_TYPE_MEDICINE_BLACK_BOMB 15
 #define OBJECT_TYPE_FLOWER 16
+#define OBJECT_TYPE_MOVING_BRICK 17
 
 #define OBJECT_TYPE_BULLET 20
 #define OBJECT_TYPE_NOCOLLISIONOBJECT 49
@@ -200,6 +201,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_FISH_BLACK: obj = new Fish(FISH_TYPE_BLACK); break;
 	case OBJECT_TYPE_FISH_YELLOW: obj = new Fish(FISH_TYPE_YELLOW); break;
 	case OBJECT_TYPE_BULLET: obj = new Bullet(); break;
+	case OBJECT_TYPE_MOVING_BRICK:
+	{
+		int min = atof(tokens[4].c_str());
+		int max = atof(tokens[5].c_str());
+		int type = atof(tokens[6].c_str());
+		obj = new CMovingBrick(min, max, type);
+		break;
+	}
 	case OBJECT_TYPE_INCLINE:
 	{
 		float d = atof(tokens[4].c_str());
@@ -509,7 +518,9 @@ void CPlayScene::Render()
 		this->map->Render();
 	}
 	for (int i = 0; i < objects.size(); i++)
+	{
 		objects[i]->Render();
+	}
 	/*if (map)
 	{
 		this->map->Render();
