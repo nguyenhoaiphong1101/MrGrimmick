@@ -7,6 +7,7 @@
 #include "Sprites.h"
 #include "Portal.h"
 #include "BlackEnemy.h"
+#include "Thunder.h"
 
 using namespace std;
 
@@ -59,6 +60,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_FISH_RED 60
 #define OBJECT_TYPE_FISH_BLACK	61
 #define OBJECT_TYPE_FISH_YELLOW	62
+#define OBJECT_TYPE_THUNDER 63
+
 #define OBJECT_TYPE_STAR	21
 #define OBJECT_TYPE_INCLINE	22
 #define OBJECT_TYPE_PIPES	23
@@ -112,6 +115,7 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 
 	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
 
+
 	LPANIMATION ani = new CAnimation();
 
 	int ani_id = atoi(tokens[0].c_str());
@@ -130,6 +134,7 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 	vector<string> tokens = split(line);
 
 	if (tokens.size() < 2) return; // skip invalid lines - an animation set must at least id and one animation id
+	//DebugOut(L"--> %s\n", ToWSTR(line).c_str());
 
 	int ani_set_id = atoi(tokens[0].c_str());
 

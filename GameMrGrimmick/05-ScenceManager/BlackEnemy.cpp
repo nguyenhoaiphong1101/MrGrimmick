@@ -1,9 +1,13 @@
 #include "BlackEnemy.h"
 #include "Incline.h"
 #include "Game.h"
+#include "BLACKENEMY.h"
+#include "Slide.h"
+#include "Brick.h"
 BlackEnemy::BlackEnemy()
 {
 	SetState(BLACKENEMY_STATE_WALKING);
+	StartWalk();
 	nx = 1;
 }
 void BlackEnemy::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLISIONEVENT>& coEventsResult, float& min_tx, float& min_ty, float& nx, float& ny, float& rdx, float& rdy)
@@ -35,6 +39,10 @@ void BlackEnemy::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCO
 		{
 			ny = -0.01f;
 		}
+		if (dynamic_cast<Slide*>(c->obj))
+		{
+
+		}
 	}
 
 	if (min_ix >= 0) coEventsResult.push_back(coEvents[min_ix]);
@@ -63,8 +71,13 @@ void BlackEnemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
+	if (GetTickCount() - time_state_walk > BLACKENEMY_TIME_WALKING && state == BLACKENEMY_TIME_WALKING)
+	{
 
+		vy += BLACKENEMY_JUMP_SPEED_Y;
 
+	}
+	// 
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
 		LPGAMEOBJECT obj = coObjects->at(i);
@@ -138,6 +151,37 @@ void BlackEnemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						SetState(BLACKENEMY_STATE_INCLINE_UP);
 					}
 				}
+				if (dynamic_cast<Slide*>(e->obj))
+				{
+					isSlide = true;
+					Slide* slide = dynamic_cast<Slide*>(e->obj);
+					if (slide->GetType() == SLIDE_TYPE_LEFT)
+					{
+						slideType = -1;
+					}
+					else if (slide->GetType() == SLIDE_TYPE_RIGHT)
+					{
+						slideType = 1;
+					}
+					else
+					{
+						isSlide = false;
+					}
+				}
+				if (dynamic_cast<CBrick*>(e->obj))
+				{
+					if (e->nx != 0)
+					{
+						if (state == BLACKENEMY_STATE_WALKING)
+						{
+							vy += BLACKENEMY_JUMP_SPEED_Y;
+						}
+					}
+					if (e->ny != 0)
+					{
+
+					}
+				}
 			}
 			/*if (!dynamic_cast<Incline*>(e->obj))
 				if (e->nx != 0&& e->ny>5)
@@ -164,6 +208,15 @@ void BlackEnemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				y += min_ty * dy + ny * 0.4f;
 			}
 		}
+		
+		if (isSlide && nx > 0)
+		{
+			SetState(BLACKENEMY_STATE_AUTO_GO_SLIDE_RIGHT);
+		}
+		else if (isSlide && nx < 0)
+		{
+			SetState(BLACKENEMY_STATE_AUTO_GO_SLIDE_LEFT);
+		}
 	}
 
 	// clean up collision events
@@ -180,12 +233,31 @@ void BlackEnemy::Render()
 		else 
 			ani = BLACKENEMY_ANI_WALK_LEFT;
 	}
+	else if (state == BLACKENEMY_STATE_JUMP)
+	{
+		if (nx > 0)
+			ani = BLACKENEMY_ANI_JUMP_RIGHT;
+		else
+			ani = BLACKENEMY_ANI_JUMP_LEFT;
+	}
 	else if (state == BLACKENEMY_STATE_FLYING)
 	{
 		if (nx > 0)
 			ani = BLACKENEMY_ANI_FLY_RIGHT;
 		else
 			ani = BLACKENEMY_ANI_FLY_LEFT;
+	}
+	else if (state == BLACKENEMY_STATE_AUTO_GO_SLIDE_RIGHT)
+	{
+		ani = BLACKENEMY_ANI_WALK_RIGHT;
+	}
+	else if (state == BLACKENEMY_STATE_AUTO_GO_SLIDE_LEFT)
+	{
+		ani = BLACKENEMY_ANI_WALK_LEFT;
+	}
+	else if (state == BLACKENEMY_STATE_DIE)
+	{
+		ani = BLACKENEMY_ANI_DIE;
 	}
 
 	animation_set->at(ani)->Render(x, y);
@@ -237,9 +309,37 @@ void BlackEnemy::SetState(int state)
 				vy = BLACKENEMY_INCLINE_UP_SPEED_Y_2;
 			}
 		}
-	}
-	break;
+	case BLACKENEMY_STATE_FLYING:
+		if (nx > 0)
+		{
 
+		}
+		break;
+	case BLACKENEMY_STATE_JUMP:
+		vy = BLACKENEMY_JUMP_SPEED_Y;
+		break;
+	case BLACKENEMY_STATE_AUTO_GO_SLIDE_LEFT:
+		if (slideType == -1)
+		{
+			vx = -BLACKENEMY_WALKING_SPEED_SLIDE_TRUE;
+		}
+		else
+		{
+			vx = -BLACKENEMY_WALKING_SPEED_SLIDE_FALSE;
+		}
+		nx = -1;
+		break;
+	case BLACKENEMY_STATE_AUTO_GO_SLIDE_RIGHT:
+		if (slideType == 1)
+		{
+			vx = BLACKENEMY_WALKING_SPEED_SLIDE_TRUE;
+		}
+		else
+		{
+			vx = BLACKENEMY_WALKING_SPEED_SLIDE_FALSE;
+		}
+		nx = 1;
+		break;
 	case BLACKENEMY_STATE_INCLINE_DOWN:
 	{
 		if (direct_go == 1)
@@ -268,7 +368,6 @@ void BlackEnemy::SetState(int state)
 			}
 		}
 	}
-	break;
 	}
-
+	}
 }

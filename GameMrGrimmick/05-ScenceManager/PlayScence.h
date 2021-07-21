@@ -50,7 +50,7 @@ public:
 	Quadtree* quadtree;
 	CPlayScene(int id, LPCWSTR filePath);
 
-
+	vector<LPGAMEOBJECT> get_objects() { return objects; };
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();

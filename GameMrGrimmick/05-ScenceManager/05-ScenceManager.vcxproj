@@ -135,6 +135,7 @@
     <ClCompile Include="ElectricBoom.cpp" />
     <ClCompile Include="Fish.cpp" />
     <ClCompile Include="FloatBox.cpp" />
+    <ClCompile Include="GimmickDieEffect.cpp" />
     <ClCompile Include="Incline.cpp" />
     <ClCompile Include="IntroScence.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="Slide.cpp" />
     <ClCompile Include="Star.cpp" />
     <ClCompile Include="SuspensionBridge.cpp" />
+    <ClCompile Include="Thunder.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -173,6 +175,7 @@
     <ClInclude Include="ElectricBoom.h" />
     <ClInclude Include="Fish.h" />
     <ClInclude Include="FloatBox.h" />
+    <ClInclude Include="GimmickDieEffect.h" />
     <ClInclude Include="Incline.h" />
     <ClInclude Include="IntroScence.h" />
     <ClInclude Include="Item.h" />
@@ -188,6 +191,7 @@
     <ClInclude Include="Slide.h" />
     <ClInclude Include="Star.h" />
     <ClInclude Include="SuspensionBridge.h" />
+    <ClInclude Include="Thunder.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
