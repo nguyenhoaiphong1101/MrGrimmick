@@ -3,6 +3,7 @@
 
 #include "Game.h"
 #include "Utils.h"
+#include "IntroScence.h"
 
 #include "PlayScence.h"
 
@@ -346,8 +347,16 @@ void CGame::_ParseSection_SCENES(string line)
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);
 
-	LPSCENE scene = new CPlayScene(id, path);
-	scenes[id] = scene;
+	if (id == 11 || id == 12 || id == 13)
+	{
+		LPSCENE scene = new CStartScence(id, path);
+		scenes[id] = scene;
+	}
+	else
+	{
+		LPSCENE scene = new CPlayScene(id, path);
+		scenes[id] = scene;
+	}
 }
 
 /*
