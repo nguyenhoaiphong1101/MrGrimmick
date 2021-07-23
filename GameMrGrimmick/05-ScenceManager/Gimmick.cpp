@@ -10,7 +10,26 @@
 #include "Portal.h"
 #include "Slide.h"
 
+void CGimmick::CalcPotentialCollisions(
+	vector<LPGAMEOBJECT>* coObjects,
+	vector<LPCOLLISIONEVENT>& coEvents)
+{
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<Star*>(coObjects->at(i)))
+		{
+			continue;
+		}
+		LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
 
+		if (e->t > 0 && e->t <= 1.0f)
+			coEvents.push_back(e);
+		else
+			delete e;
+	}
+
+	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
+}
 
 CGimmick::CGimmick(float x, float y) : CGameObject()
 {

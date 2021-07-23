@@ -201,11 +201,19 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_MEDICINE_PINK_BOMB: obj = new Item(ITEM_TYPE_MEDICINE_PINK_BOMB); break;
 	case OBJECT_TYPE_MEDICINE_BLACK_BOMB: obj = new Item(ITEM_TYPE_MEDICINE_BLACK_BOMB); break;
 	case OBJECT_TYPE_FLOWER: obj = new Item(ITEM_TYPE_FLOWER); break;
-	case OBJECT_TYPE_STAR: obj = new Star(); break;
 	case OBJECT_TYPE_FISH_RED: obj = new Fish(FISH_TYPE_RED); break;
 	case OBJECT_TYPE_FISH_BLACK: obj = new Fish(FISH_TYPE_BLACK); break;
 	case OBJECT_TYPE_FISH_YELLOW: obj = new Fish(FISH_TYPE_YELLOW); break;
 	case OBJECT_TYPE_BULLET: obj = new Bullet(); break;
+	case OBJECT_TYPE_STAR:
+		if (star != NULL)
+		{
+			DebugOut(L"[ERROR] Have star already man!\n");
+			return;
+		}
+		obj = new Star();
+		this->star = (Star*)obj;
+		; break;
 	case OBJECT_TYPE_MOVING_BRICK:
 	{
 		int min = atof(tokens[4].c_str());
@@ -372,12 +380,24 @@ void CPlayScene::Update(DWORD dt)
 	quadtree->Retrieve(&coObjects, player);
 	player->Update(dt, &coObjects);
 
+	if (player == NULL) return;
+	// update star
+	if (star->state == STAR_STATE_READY_TO_SHOT || star->state == STAR_STATE_LOADING)
+	{
+		star->SetPosition(player->x-2, player->y + 20);
+	}
+	vector<LPGAMEOBJECT> temp_coObjects;
+	quadtree->Retrieve(&temp_coObjects, star);
+	star->Update(dt, &temp_coObjects);
+
 	// Duyệt các object cần update (có code xử lý trong hàm update của object đó)
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		if (!CGame::GetInstance()->ObjectInCamera(objects[i]))
 			continue;
 		if (dynamic_cast<CGimmick*>(objects[i]))
+			continue;
+		if (dynamic_cast<Star*>(objects[i]))
 			continue;
 		/*if (dynamic_cast<CBoom*>(objects[i])
 			|| dynamic_cast<CSwing*>(objects[i])
@@ -560,6 +580,9 @@ void CPlayScene::Unload()
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+	CGimmick* gimmick = ((CPlayScene*)scence)->GetPlayer();
+	Star* star = ((CPlayScene*)scence)->GetStar();
+	if (gimmick->GetState() == GIMMICK_STATE_DIE) return;
 
 	CGimmick* grimmick = ((CPlayScene*)scence)->GetPlayer();
 	switch (KeyCode)
@@ -576,17 +599,25 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_A: 
 		grimmick->Reset();
 		break;
+	case DIK_V:
+		if (star != nullptr) {
+			star->GetReady();
+		}
+		break;
 	}
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
 	CGimmick* grimmick = ((CPlayScene*)scence)->GetPlayer();
+	Star* star = ((CPlayScene*)scence)->GetStar();
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
 		grimmick->holdJump = 0;
 		break;
+	case DIK_V:
+		star->Shot();
 	}
 }
 

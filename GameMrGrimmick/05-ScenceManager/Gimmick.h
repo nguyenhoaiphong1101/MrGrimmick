@@ -112,6 +112,9 @@ public:
 	void SetJumping(int jump) { this->jump = jump; };
 	void SetOnBridge(bool isOnBridge) { this->isOnBridge = isOnBridge; };
 	void Reset();
+	void CalcPotentialCollisions(
+		vector<LPGAMEOBJECT>* coObjects,
+		vector<LPCOLLISIONEVENT>& coEvents);
 	void KeyState(BYTE* state);
 	void GetItem(int type);
 	void OnKeyDown(int keyCode);

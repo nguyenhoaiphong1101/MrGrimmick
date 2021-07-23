@@ -34,7 +34,8 @@ class CPlayScene: public CScene
 {
 protected: 
 	Map* map;
-	CGimmick* player;					// A play scene has to have player, right? 
+	CGimmick* player;				// A play scene has to have player, right? 
+	Star* star = nullptr;
 	vector<LPGAMEOBJECT> objects;
 	CHud* hud = new CHud();
 	
@@ -60,6 +61,7 @@ public:
 	void SetCamPos();
 
 	CGimmick* GetPlayer() { return player; }
+	Star* GetStar() { return star; };
 
 	//friend class CPlayScenceKeyHandler;
 };
