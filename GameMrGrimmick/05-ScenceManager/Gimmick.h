@@ -113,6 +113,7 @@ public:
 	void SetOnBridge(bool isOnBridge) { this->isOnBridge = isOnBridge; };
 	void Reset();
 	void KeyState(BYTE* state);
+	void GetItem(int type);
 	void OnKeyDown(int keyCode);
 	void OnKeyUp(int keyCode);
 

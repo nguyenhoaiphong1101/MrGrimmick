@@ -124,6 +124,14 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				holdJump = 0;
 				jump = 0;
 			}
+			if (dynamic_cast<Item*>(e->obj))
+			{
+
+				Item* item = dynamic_cast<Item*>(e->obj);
+				GetItem(item->GetType());
+				item->SetState(ITEM_STATE_DISAPPEAR);
+
+			}
 			if (dynamic_cast<Incline*>(e->obj)) {
 
 				isIncline = true;
@@ -564,4 +572,42 @@ void CGimmick::Reset()
 	SetState(GIMMICK_STATE_IDLE);
 	SetPosition(950, 122);
 	SetSpeed(0, 0);
+}
+
+void CGimmick::GetItem(int type)
+{
+	CGame* game = CGame::GetInstance();
+	vector <int> itemlist = game->GetItem();
+	if (type == ITEM_TYPE_MEDICINE_PINK || type == ITEM_TYPE_MEDICINE_PINK_BOMB || type == ITEM_TYPE_MEDICINE_BLACK_BOMB)
+	{
+		//cộng điểm 
+		game->IncScore(720);
+		if (type == ITEM_TYPE_MEDICINE_PINK)
+		{
+			game->IncLight(1);
+		}
+		// neu khong co san trong itemlist thì thêm 
+		for each (int item in itemlist)
+		{
+			if (item == type)
+				return; // khoi them nua 
+		}
+		itemlist.push_back(type);
+		game->SetItem(itemlist);
+		DebugOut(L"[ERROR] Vô hud!\n");
+
+	}
+	else if (type == ITEM_TYPE_MEDICINE_ORANGE)
+	{
+		// tăng mạng
+		game->IncLight(2);
+		DebugOut(L"[ERROR] Vô tăng mạng!\n");
+	}
+	else if (type == ITEM_TYPE_FLOWER)
+	{
+		game->IncScore(50000);
+		game->IncRest(2);
+		DebugOut(L"[ERROR] Vô hoa!\n");
+	}
+
 }

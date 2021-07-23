@@ -21,6 +21,7 @@
 #include "BoomBoss.h"
 #include "Electricboom.h"
 #include "Worm.h"
+#include "Hud.h"
 #include "Window.h"
 #include "SuspensionBridge.h"
 #include "Rocket.h"
@@ -35,7 +36,7 @@ protected:
 	Map* map;
 	CGimmick* player;					// A play scene has to have player, right? 
 	vector<LPGAMEOBJECT> objects;
-
+	CHud* hud = new CHud();
 	
 
 	void _ParseSection_TEXTURES(string line);

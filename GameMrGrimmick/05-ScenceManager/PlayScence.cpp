@@ -366,7 +366,8 @@ void CPlayScene::Update(DWORD dt)
 
 	// Update player
 	vector<LPGAMEOBJECT> coObjects;
-	
+	//SetCamPos();
+	// update hud
 
 	quadtree->Retrieve(&coObjects, player);
 	player->Update(dt, &coObjects);
@@ -406,6 +407,8 @@ void CPlayScene::Update(DWORD dt)
 
 	// Update camera to follow mario
 	SetCamPos();
+	hud->Update(dt);
+
 }
 
 
@@ -526,6 +529,7 @@ void CPlayScene::Render()
 	{
 		objects[i]->Render();
 	}
+	hud->Render();
 	/*if (map)
 	{
 		this->map->Render();

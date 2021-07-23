@@ -136,6 +136,7 @@
     <ClCompile Include="Fish.cpp" />
     <ClCompile Include="FloatBox.cpp" />
     <ClCompile Include="GimmickDieEffect.cpp" />
+    <ClCompile Include="Hud.cpp" />
     <ClCompile Include="Incline.cpp" />
     <ClCompile Include="IntroScence.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Fish.h" />
     <ClInclude Include="FloatBox.h" />
     <ClInclude Include="GimmickDieEffect.h" />
+    <ClInclude Include="Hud.h" />
     <ClInclude Include="Incline.h" />
     <ClInclude Include="IntroScence.h" />
     <ClInclude Include="Item.h" />
