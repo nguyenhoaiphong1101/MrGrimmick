@@ -55,8 +55,12 @@ void CGimmick::FollowObject(LPGAMEOBJECT obj)
 {
 	vx = obj->GetVx();
 	//x = obj->GetX();
-	y = obj->GetY() + GIMMICK_BIG_BBOX_HEIGHT + 0.4f;
+	if (!dynamic_cast<SuspensionBridge*>(obj))
+	{
+		y = obj->GetY() + GIMMICK_BIG_BBOX_HEIGHT + 0.4f;
+	}
 }
+	
 
 
 
@@ -71,7 +75,22 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (isFollow) {
 
-		FollowObject(obj);
+		if (dynamic_cast<SuspensionBridge*>(obj))
+		{
+			SuspensionBridge* bridge = dynamic_cast<SuspensionBridge*>(obj);
+			if (bridge->isOpening)
+			{
+				isFollow = false;
+				isOnBridge = false;
+			}
+			else
+			{
+				FollowObject(obj);
+			}
+		}
+		else {
+			FollowObject(obj);
+		}
 	}
 	else {
 		obj = NULL;
@@ -99,7 +118,7 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
-	
+
 	coEvents.clear();
 
 	// turn off collision when die 
@@ -250,6 +269,33 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				isSlide = false;
 			}
+			if (dynamic_cast<SuspensionBridge*>(e->obj))
+			{
+				
+				SuspensionBridge* bridge = dynamic_cast<SuspensionBridge*>(e->obj);
+				if (!bridge->isOpening)
+				{
+					isOnBridge = true;
+					isFollow = true;
+					obj = bridge;
+				}
+				if (bridge->GetState() != BRIDGE_STATE_MOVING && !bridge->GetIsOpening())
+				{
+					bridge->SetState(BRIDGE_STATE_MOVING);
+
+					//DebugOut(L"[INFO] Vô đây hoài: \n");
+				}
+				/*	else
+					{
+						isOnBridge = false;
+					}*/
+					/*this->x += bridge->dt * BRIDGE_MOVING_SPEED;*/
+
+			}
+			else
+			{
+				isOnBridge = false;
+			}
 			if (dynamic_cast<CMovingBrick*>(e->obj)) {
 
 				CMovingBrick* mb = dynamic_cast<CMovingBrick*>(e->obj);
@@ -264,12 +310,12 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			}
 			if (dynamic_cast<CPortal*>(e->obj)) {
-					CPortal* p = dynamic_cast<CPortal*>(e->obj);
-					CGame::GetInstance()->playerX = p->getOldX();
-					CGame::GetInstance()->playerY = p->getOldY();
-					CGame::GetInstance()->isSwitchScene = true;
-					CGame::GetInstance()->SwitchScene(p->GetSceneId());
-					return;
+				CPortal* p = dynamic_cast<CPortal*>(e->obj);
+				CGame::GetInstance()->playerX = p->getOldX();
+				CGame::GetInstance()->playerY = p->getOldY();
+				CGame::GetInstance()->isSwitchScene = true;
+				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+				return;
 			}
 		}
 		if (!isIncline && !isPiping && !isSlide) {
