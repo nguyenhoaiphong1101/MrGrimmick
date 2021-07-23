@@ -269,6 +269,12 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				isSlide = false;
 			}
+			if (dynamic_cast<CThunder*>(e->obj))
+			{
+				CThunder* thunder = dynamic_cast<CThunder*>(e->obj);
+				this->SetState(GIMMICK_STATE_DIE);
+
+			}
 			if (dynamic_cast<SuspensionBridge*>(e->obj))
 			{
 				
@@ -410,6 +416,11 @@ void CGimmick::Render()
 	{
 		ani = GIMMICK_ANI_WALKING_LEFT;
 	}
+	else if (state == GIMMICK_STATE_DIE)
+	{
+		createDieEffect();
+		return;
+	}
 	else //if (state == GIMMICK_STATE_AUTO_GO)
 	{
 		if (key_down == 1)
@@ -495,6 +506,7 @@ void CGimmick::KeyState(BYTE* state)
 
 void CGimmick::SetState(int state)
 {
+	CGame* game = CGame::GetInstance();
 	CGameObject::SetState(state);
 
 	switch (state)
@@ -540,7 +552,12 @@ void CGimmick::SetState(int state)
 		vx = 0;
 		break;
 	case GIMMICK_STATE_DIE:
-		vy = -GIMMICK_DIE_DEFLECT_SPEED;
+		this->isDeath = true;
+		this->vx = 0;
+		this->vy = 0;
+		positionX = this->x;
+		positionY = this->y;
+		if (game->GetRest() > 0) game->IncRest(-1);
 		break;
 	case GIMMICK_STATE_INCLINE_UP:
 	{
@@ -620,6 +637,29 @@ void CGimmick::SetState(int state)
 	}
 
 }
+
+
+void CGimmick::createDieEffect() {
+	deltaTimeDie += 10;
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	animation_sets->Get(80)->at(0)->Render(positionX, positionY + GIMMICKDIEEFFECT_SPEED * deltaTimeDie);
+	animation_sets->Get(80)->at(0)->Render(positionX + GIMMICKDIEEFFECT_SPEED_675 * deltaTimeDie, positionY + GIMMICKDIEEFFECT_SPEED_225 * deltaTimeDie);
+	animation_sets->Get(80)->at(0)->Render(positionX + GIMMICKDIEEFFECT_SPEED_450 * deltaTimeDie, positionY + GIMMICKDIEEFFECT_SPEED_450 * deltaTimeDie);
+	animation_sets->Get(80)->at(0)->Render(positionX + GIMMICKDIEEFFECT_SPEED_225 * deltaTimeDie, positionY + GIMMICKDIEEFFECT_SPEED_675 * deltaTimeDie);
+	animation_sets->Get(80)->at(0)->Render(positionX + GIMMICKDIEEFFECT_SPEED * deltaTimeDie, positionY);
+	animation_sets->Get(80)->at(0)->Render(positionX + GIMMICKDIEEFFECT_SPEED_225 * deltaTimeDie, positionY + -GIMMICKDIEEFFECT_SPEED_675 * deltaTimeDie);
+	animation_sets->Get(80)->at(0)->Render(positionX + GIMMICKDIEEFFECT_SPEED_450 * deltaTimeDie, positionY + -GIMMICKDIEEFFECT_SPEED_450 * deltaTimeDie);
+	animation_sets->Get(80)->at(0)->Render(positionX + GIMMICKDIEEFFECT_SPEED_675 * deltaTimeDie, positionY + -GIMMICKDIEEFFECT_SPEED_225 * deltaTimeDie);
+	animation_sets->Get(80)->at(0)->Render(positionX, positionY + -GIMMICKDIEEFFECT_SPEED * deltaTimeDie);
+	animation_sets->Get(80)->at(0)->Render(positionX + -GIMMICKDIEEFFECT_SPEED_675 * deltaTimeDie, positionY + -GIMMICKDIEEFFECT_SPEED_225 * deltaTimeDie);
+	animation_sets->Get(80)->at(0)->Render(positionX + -GIMMICKDIEEFFECT_SPEED_450 * deltaTimeDie, positionY + -GIMMICKDIEEFFECT_SPEED_450 * deltaTimeDie);
+	animation_sets->Get(80)->at(0)->Render(positionX + -GIMMICKDIEEFFECT_SPEED_225 * deltaTimeDie, positionY + -GIMMICKDIEEFFECT_SPEED_675 * deltaTimeDie);
+	animation_sets->Get(80)->at(0)->Render(positionX + -GIMMICKDIEEFFECT_SPEED * deltaTimeDie, positionY);
+	animation_sets->Get(80)->at(0)->Render(positionX + -GIMMICKDIEEFFECT_SPEED_225 * deltaTimeDie, positionY + GIMMICKDIEEFFECT_SPEED_675 * deltaTimeDie);
+	animation_sets->Get(80)->at(0)->Render(positionX + -GIMMICKDIEEFFECT_SPEED_450 * deltaTimeDie, positionY + GIMMICKDIEEFFECT_SPEED_450 * deltaTimeDie);
+	animation_sets->Get(80)->at(0)->Render(positionX + -GIMMICKDIEEFFECT_SPEED_675 * deltaTimeDie, positionY + GIMMICKDIEEFFECT_SPEED_225 * deltaTimeDie);
+}
+
 
 void CGimmick::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {

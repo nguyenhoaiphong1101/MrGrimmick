@@ -50,6 +50,15 @@
 #define GIMMICK_BIG_BBOX_WIDTH  16
 #define GIMMICK_BIG_BBOX_HEIGHT 19
 
+// die effect
+#define GIMMICKDIEEFFECT_SPEED 0.1f
+#define GIMMICKDIEEFFECT_SPEED_225 0.0924f
+#define GIMMICKDIEEFFECT_SPEED_450 0.0707f
+#define GIMMICKDIEEFFECT_SPEED_675 0.0383f
+
+#define GIMMICKDIEEFFECT_BBOX_WIDTH		16
+#define GIMMICKDIEEFFECT_BBOX_HEIGHT	16
+
 
 
 #define GIMMICK_UNTOUCHABLE_TIME 5000
@@ -91,6 +100,11 @@ public:
 
 	float incline_vx, incline_vy;
 
+	//set gimmick die
+	float positionX, positionY;
+	float deltaTimeDie = 0;
+	bool isDeath = false;
+
 
 	//
 	int startJump = -1;
@@ -112,6 +126,7 @@ public:
 	void SetJumping(int jump) { this->jump = jump; };
 	void SetOnBridge(bool isOnBridge) { this->isOnBridge = isOnBridge; };
 	void Reset();
+	void createDieEffect();
 	void CalcPotentialCollisions(
 		vector<LPGAMEOBJECT>* coObjects,
 		vector<LPCOLLISIONEVENT>& coEvents);

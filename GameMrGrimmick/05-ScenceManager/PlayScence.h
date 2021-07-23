@@ -26,6 +26,7 @@
 #include "SuspensionBridge.h"
 #include "Rocket.h"
 #include "Bullet.h"
+#include "Thunder.h"
 #include "Star.h"
 #include "Pipes.h"
 #include "Incline.h"

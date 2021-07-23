@@ -204,6 +204,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_FISH_RED: obj = new Fish(FISH_TYPE_RED); break;
 	case OBJECT_TYPE_FISH_BLACK: obj = new Fish(FISH_TYPE_BLACK); break;
 	case OBJECT_TYPE_FISH_YELLOW: obj = new Fish(FISH_TYPE_YELLOW); break;
+	case OBJECT_TYPE_THUNDER: obj = new CThunder(); break;
 	case OBJECT_TYPE_BULLET: obj = new Bullet(); break;
 	case OBJECT_TYPE_STAR:
 		if (star != NULL)
