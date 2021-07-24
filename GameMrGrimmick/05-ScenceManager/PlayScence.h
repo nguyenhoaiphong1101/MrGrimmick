@@ -38,6 +38,7 @@ protected:
 	CGimmick* player;				// A play scene has to have player, right? 
 	Star* star = nullptr;
 	vector<LPGAMEOBJECT> objects;
+	vector<LPGAMEOBJECT> objectsNoColliMove;
 	CHud* hud = new CHud();
 	
 

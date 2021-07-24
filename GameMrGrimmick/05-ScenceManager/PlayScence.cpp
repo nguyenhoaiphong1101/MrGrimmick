@@ -57,9 +57,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_SLIDE_RIGHT 51
 #define OBJECT_TYPE_SLIDE_LEFT	52
 
-#define OBJECT_TYPE_FISH_RED 60
-#define OBJECT_TYPE_FISH_BLACK	61
-#define OBJECT_TYPE_FISH_YELLOW	62
+#define OBJECT_TYPE_FISH 60
 #define OBJECT_TYPE_THUNDER 63
 
 #define OBJECT_TYPE_STAR	21
@@ -201,9 +199,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_MEDICINE_PINK_BOMB: obj = new Item(ITEM_TYPE_MEDICINE_PINK_BOMB); break;
 	case OBJECT_TYPE_MEDICINE_BLACK_BOMB: obj = new Item(ITEM_TYPE_MEDICINE_BLACK_BOMB); break;
 	case OBJECT_TYPE_FLOWER: obj = new Item(ITEM_TYPE_FLOWER); break;
-	case OBJECT_TYPE_FISH_RED: obj = new Fish(FISH_TYPE_RED); break;
-	case OBJECT_TYPE_FISH_BLACK: obj = new Fish(FISH_TYPE_BLACK); break;
-	case OBJECT_TYPE_FISH_YELLOW: obj = new Fish(FISH_TYPE_YELLOW); break;
+	case OBJECT_TYPE_FISH: obj = new Fish(); break;
 	case OBJECT_TYPE_THUNDER: obj = new CThunder(); break;
 	case OBJECT_TYPE_BULLET: obj = new Bullet(); break;
 	case OBJECT_TYPE_STAR:
@@ -262,7 +258,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 
 	obj->SetAnimationSet(ani_set);
-	objects.push_back(obj);
+	if (object_type == OBJECT_TYPE_FISH)
+	{
+		objectsNoColliMove.push_back(obj);
+	}
+	else
+	{
+		objects.push_back(obj);
+	}
 }
 void CPlayScene::_ParseSection_MAP(string line)
 {
@@ -417,6 +420,10 @@ void CPlayScene::Update(DWORD dt)
 			objects[i]->Update(dt, &coObjectsUpdate);
 		/*}*/
 	}
+	for (size_t i = 0; i < objectsNoColliMove.size(); i++)
+	{
+		objectsNoColliMove[i]->Update(dt);
+	}
 	
 	// Làm trống quadtree
 	if(quadtree)
@@ -553,6 +560,10 @@ void CPlayScene::Render()
 	for (int i = 0; i < objects.size(); i++)
 	{
 		objects[i]->Render();
+	}
+	for (size_t i = 0; i < objectsNoColliMove.size(); i++)
+	{
+		objectsNoColliMove[i]->Render();
 	}
 	hud->Render();
 	/*if (map)
