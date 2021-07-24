@@ -12,7 +12,7 @@ CStartScence::CStartScence(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	key_handler = new CStartScenceKeyHandler(this);
-	CGame::GetInstance()->SetCamPos(-5, 150);
+	CGame::GetInstance()->SetCamPos(-5, 175);
 }
 
 
@@ -224,17 +224,10 @@ void CStartScence::Update(DWORD dt)
 		time_start = GetTickCount();
 		isTimeStart = true;
 	}
-	if (GetTickCount() - time_start > 40800)
+	if (GetTickCount() - time_start > 25800)
 	{
 		CGame::GetInstance()->SwitchScene(12);
 	}
-
-	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	//if (player1 == NULL) return;
-
-
-
-
 
 }
 
@@ -267,12 +260,11 @@ void CStartScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_W:
 		CGame::GetInstance()->SwitchScene(13);
 		break;
-	case DIK_S:
-		CGame::GetInstance()->SwitchScene(1);
-		break;
-
 	case DIK_1:
 		CGame::GetInstance()->SwitchScene(1);
+		break;
+	case DIK_2:
+		CGame::GetInstance()->SwitchScene(12);
 		break;
 	}
 }

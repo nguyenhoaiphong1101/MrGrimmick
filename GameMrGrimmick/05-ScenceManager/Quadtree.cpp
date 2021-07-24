@@ -1,5 +1,6 @@
 #include "Quadtree.h"
 #include "Utils.h"
+#include "Game.h"
 
 void Quadtree::Clear()
 {
@@ -24,6 +25,7 @@ bool Quadtree::IsContain(CGameObject* entity)
 {
     float ol, ot, or , ob;
     entity->GetBoundingBox(ol, ot, or , ob);
+
 
     return !(or < l || ot < b-16.0 || ol > r || ob > t+16.0);
 }

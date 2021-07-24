@@ -99,7 +99,7 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	if (holdJump != 1 && !isIncline && !isPiping && !isFollow)
+	if (holdJump != 1 && !isIncline && !isPiping && !isFollow && state!=GIMMICK_STATE_DIE)
 		vy -= GIMMICK_GRAVITY * dt;
 
 
@@ -122,7 +122,7 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	coEvents.clear();
 
 	// turn off collision when die 
-	if (state != GIMMICK_STATE_DIE || !isPiping)
+	if (state != GIMMICK_STATE_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed

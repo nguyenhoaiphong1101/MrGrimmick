@@ -62,6 +62,7 @@ public:
 	void SetCamPos();
 
 	CGimmick* GetPlayer() { return player; }
+	Quadtree* GetQuadtree() { return quadtree; }
 	Star* GetStar() { return star; };
 
 	//friend class CPlayScenceKeyHandler;

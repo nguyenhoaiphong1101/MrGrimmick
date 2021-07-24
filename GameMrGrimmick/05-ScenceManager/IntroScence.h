@@ -16,7 +16,6 @@ class CStartScence : public  CScene
 {
 protected:
 
-	//CMario* player1;
 
 	vector<LPGAMEOBJECT> objects;
 
