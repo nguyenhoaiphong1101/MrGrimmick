@@ -61,8 +61,43 @@ void CGimmick::FollowObject(LPGAMEOBJECT obj)
 	}
 }
 	
+void CGimmick::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLISIONEVENT>& coEventsResult, float& min_tx, float& min_ty, float& nx, float& ny, float& rdx, float& rdy)
+{
 
+	min_tx = 1.0f;
+	min_ty = 1.0f;
+	int min_ix = -1;
+	int min_iy = -1;
 
+	nx = 0.0f;
+	ny = 0.0f;
+
+	coEventsResult.clear();
+
+	bool check_rec = false;
+	bool check_brickbroken = false;
+
+	for (UINT i = 0; i < coEvents.size(); i++)
+	{
+		LPCOLLISIONEVENT c = coEvents[i];
+
+		if (c->t < min_tx && c->nx != 0) {
+			min_tx = c->t; nx = c->nx; min_ix = i; rdx = c->dx;
+		}
+
+		if (c->t < min_ty && c->ny != 0) {
+			min_ty = c->t; ny = c->ny; min_iy = i; rdy = c->dy;
+		}
+		if (dynamic_cast<BlackEnemy*>(c->obj))
+		{
+			if(c->ny<0)
+			ny = 0;
+		}
+	}
+
+	if (min_ix >= 0) coEventsResult.push_back(coEvents[min_ix]);
+	if (min_iy >= 0) coEventsResult.push_back(coEvents[min_iy]);
+}
 
 void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -161,6 +196,18 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				holdJump = 0;
 				jump = 0;
+			}
+			if (dynamic_cast<BlackEnemy*>(e->obj)) {
+
+				BlackEnemy* be = dynamic_cast<BlackEnemy*>(e->obj);
+
+				if (e->t > 0 && e->t <= 1)
+
+					if (e->ny > 0) {
+						isFollow = true;
+						obj = be;
+					}
+
 			}
 			if (dynamic_cast<Item*>(e->obj))
 			{
