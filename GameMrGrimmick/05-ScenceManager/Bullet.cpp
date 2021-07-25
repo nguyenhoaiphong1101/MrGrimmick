@@ -130,6 +130,7 @@ void Bullet::SetState(int state)
 	switch (state)
 	{
 	case BULLET_STATE_DESTROY:
+		vx = 0;
 		StartBooming();
 		break;
 	case BULLET_STATE_IDLING:

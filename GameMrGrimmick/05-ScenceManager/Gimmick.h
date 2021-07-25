@@ -41,6 +41,8 @@
 #define GIMMICK_ANI_WALKING_RIGHT			3
 #define GIMMICK_ANI_JUMPING_RIGHT		4
 #define GIMMICK_ANI_JUMPING_LEFT		5
+#define GIMMICK_ANI_COLLISION_RIGHT 6
+#define GIMMICK_ANI_COLLISION_LEFT 7
 
 #define GIMMICK_TREND_INCLINE_RIGHT	1
 #define GIMMICK_TREND_INCLINE_LEFT	-1
@@ -61,7 +63,7 @@
 
 
 
-#define GIMMICK_UNTOUCHABLE_TIME 5000
+#define GIMMICK_UNTOUCHABLE_TIME 3000
 
 
 class CGimmick : public CGameObject
@@ -104,7 +106,7 @@ public:
 	float positionX, positionY;
 	float deltaTimeDie = 0;
 	bool isDeath = false;
-
+	bool isMoveCol = false;
 
 	//
 	int startJump = -1;
@@ -127,6 +129,7 @@ public:
 	void SetOnBridge(bool isOnBridge) { this->isOnBridge = isOnBridge; };
 	void Reset();
 	void createDieEffect();
+	void callDeclineLight();
 	virtual void FilterCollision(
 		vector<LPCOLLISIONEVENT>& coEvents,
 		vector<LPCOLLISIONEVENT>& coEventsResult,

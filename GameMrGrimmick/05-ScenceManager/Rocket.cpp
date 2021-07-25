@@ -6,6 +6,9 @@ Rocket::Rocket()
 	nx = 1;
 }
 
+
+
+
 void Rocket::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	if (state == ROCKET_STATE_DISAPPEAR)

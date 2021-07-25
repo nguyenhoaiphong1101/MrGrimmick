@@ -1,11 +1,11 @@
 #pragma once
 #include "GameObject.h"
 #include "Gimmick.h"
-#define BRIDGE_MOVING_SPEED 0.01f;
+#define BRIDGE_MOVING_SPEED 0.025f;
 
 #define BRIDGE_BBOX_WIDTH 36
 #define BRIDGE_BBOX_HEIGHT 63
-#define BRIDGE_TIME_MOVING	5000
+#define BRIDGE_TIME_MOVING	2000
 #define BRIDGE_TIME_OPENING	200
 #define BRIDGE_STATE_MOVING 100
 

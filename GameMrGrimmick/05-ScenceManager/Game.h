@@ -49,7 +49,7 @@ class CGame
 	void _ParseSection_SCENES(string line);
 	long score = 000;
 	int rest = 4;
-	int light = 1;
+	int light = 4;
 	vector<int> item;
 
 public:

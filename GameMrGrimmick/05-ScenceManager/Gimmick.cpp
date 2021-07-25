@@ -202,16 +202,35 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				BlackEnemy* be = dynamic_cast<BlackEnemy*>(e->obj);
 
 				if (e->t > 0 && e->t <= 1)
-
+				{
 					if (e->ny > 0) {
 						isFollow = true;
 						obj = be;
 					}
-				/*if (ids == 3)
+					if (e->nx != 0)
+					{
+						callDeclineLight();
+					}
+				}
+			}
+			if (dynamic_cast<Worm*>(e->obj)) {
+
+				Worm* be = dynamic_cast<Worm*>(e->obj);
+
+				if (e->t > 0 && e->t <= 1)
 				{
-					if (e->ny < 0)
-					be->SetState(BLACKENEMY_STATE_DIE);
-				}*/
+					callDeclineLight();
+				}
+			}
+			if (dynamic_cast<Rocket*>(e->obj)) {
+
+				isMoveCol = true;
+				callDeclineLight();
+			}
+			if (dynamic_cast<Bullet*>(e->obj)) {
+
+				isMoveCol = true;
+				callDeclineLight();
 			}
 			if (dynamic_cast<Item*>(e->obj))
 			{
@@ -377,9 +396,15 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		if (!isIncline && !isPiping && !isSlide) {
 
-			x += min_tx * dx + nx * 0.4f;
-			y += min_ty * dy + ny * 0.4f;
-
+			if (isMoveCol)
+			{
+				isMoveCol = false;
+			}
+			else
+			{
+				x += min_tx * dx + nx * 0.4f;
+				y += min_ty * dy + ny * 0.4f;
+			}
 			if (nx != 0) vx = 0;
 			if (ny != 0) vy = 0;
 		}
@@ -415,8 +440,14 @@ float CGimmick::isOnTriangle(float x1, float y1, float x2, float y2, float x3, f
 void CGimmick::Render()
 {
 	int ani = -1;
-
-	if (jump == 1)
+	if (untouchable == 1)
+	{
+		if (nx > 0)
+			ani = GIMMICK_ANI_COLLISION_RIGHT;
+		else
+			ani = GIMMICK_ANI_COLLISION_LEFT;
+	}
+	else if (jump == 1)
 	{
 		if (nx > 0)
 			ani = GIMMICK_ANI_JUMPING_RIGHT;
@@ -481,11 +512,28 @@ void CGimmick::Render()
 	}
 
 	int alpha = 255;
-	if (untouchable) alpha = 128;
 
 	animation_set->at(ani)->Render((int)x, (int)y, alpha);
 
 	RenderBoundingBox();
+}
+
+void CGimmick::callDeclineLight()
+{
+	if (untouchable == 0)
+	{
+		if (CGame::GetInstance()->GetLight() == 1)
+		{
+			this->SetState(GIMMICK_STATE_DIE);
+			CGame::GetInstance()->IncLight(-1);
+		}
+		else
+		{
+			// stun???
+			CGame::GetInstance()->IncLight(-1);
+			StartUntouchable();
+		}
+	}
 }
 
 void CGimmick::KeyState(BYTE* state)
@@ -728,6 +776,7 @@ void CGimmick::Reset()
 	SetState(GIMMICK_STATE_IDLE);
 	SetPosition(950, 122);
 	SetSpeed(0, 0);
+	CGame::GetInstance()->SetLight(4);
 }
 
 void CGimmick::GetItem(int type)
