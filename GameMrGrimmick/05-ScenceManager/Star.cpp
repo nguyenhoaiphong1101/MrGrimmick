@@ -49,6 +49,11 @@ void Star::FilterCollision(
 			ny = 0;
 			nx = 0;
 		}
+		if (dynamic_cast<BlackEnemy*>(c->obj))
+		{
+			ny = 0;
+			nx = 0;
+		}
 		if (dynamic_cast<Item*>(c->obj))
 		{
 			ny = 0;
