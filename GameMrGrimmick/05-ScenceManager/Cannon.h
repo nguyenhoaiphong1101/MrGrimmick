@@ -9,8 +9,23 @@
 
 
 #define CANNON_STATE_GREEN 100
+#define CANNON_STATE_INCLINE_DOWN 300
+#define CANNON_STATE_INCLINE_UP 400
+#define CANNON_STATE_DIE 500
 
 #define CANNON_STATE_RED 200
+
+
+#define CANNON_INCLINE_UP_SPEED_X_1 0.05f
+#define CANNON_INCLINE_UP_SPEED_X_2 0.075f
+#define CANNON_INCLINE_DOWN_SPEED_X_1 0.125f
+#define CANNON_INCLINE_DOWN_SPEED_X_2 0.1f
+
+#define CANNON_INCLINE_UP_SPEED_Y_1 0.065
+#define CANNON_INCLINE_UP_SPEED_Y_2 0.04f
+#define CANNON_INCLINE_DOWN_SPEED_Y_1 0.125f
+#define CANNON_INCLINE_DOWN_SPEED_Y_2 0.05f
+
 
 #define CANNON_ANI_GREEN_RIGHT 0
 
@@ -26,6 +41,12 @@ class Cannon :
 	virtual void Render();
 	//virtual void FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLISIONEVENT>& coEventsResult, float& min_tx, float& min_ty, float& nx, float& ny, float& rdx, float& rdy);
 public:
+	bool isIncline = false; // check for sliding
+	int incline_size; // size of slide
+	int direct_incline;
+	int direct_go = 1;
+	bool isFly = false;
+	int isFlying = 0;
 	Cannon();
 	Cannon(bool isRight);
 	virtual void SetState(int state);

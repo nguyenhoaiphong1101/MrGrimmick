@@ -53,11 +53,25 @@ CGimmick::CGimmick(float x, float y) : CGameObject()
 
 void CGimmick::FollowObject(LPGAMEOBJECT obj)
 {
-	vx = obj->GetVx();
-	//x = obj->GetX();
-	if (!dynamic_cast<SuspensionBridge*>(obj))
+	if (dynamic_cast<BlackEnemy*>(obj))
 	{
-		y = obj->GetY() + GIMMICK_BIG_BBOX_HEIGHT + 0.4f;
+		vx = obj->GetVx();
+		if (dynamic_cast<BlackEnemy*>(obj)->GetState() != BLACKENEMY_STATE_DIE)
+		{
+			y = obj->GetY() + GIMMICK_BIG_BBOX_HEIGHT + 0.4f;
+		}
+		else
+		{
+			isFollow = false;
+		}
+	}
+	else
+	{
+		vx = obj->GetVx();
+		if (!dynamic_cast<SuspensionBridge*>(obj))
+		{
+			y = obj->GetY() + GIMMICK_BIG_BBOX_HEIGHT + 0.4f;
+		}
 	}
 }
 	
@@ -93,6 +107,7 @@ void CGimmick::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLL
 			if(c->ny<0)
 			ny = 0;
 		}
+		
 	}
 
 	if (min_ix >= 0) coEventsResult.push_back(coEvents[min_ix]);
@@ -225,12 +240,42 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<Rocket*>(e->obj)) {
 
 				isMoveCol = true;
-				callDeclineLight();
+				if (e->t > 0 && e->t <= 1)
+				{
+					callDeclineLight();
+				}
+			}
+			if (dynamic_cast<ElectricBoom*>(e->obj))
+			{
+				ElectricBoom* be = dynamic_cast<ElectricBoom*>(e->obj);
+				if (e->t > 0 && e->t <= 1)
+				{
+					if (e->nx != 0)
+					{
+						callDeclineLight();
+					}
+				}
 			}
 			if (dynamic_cast<Bullet*>(e->obj)) {
-
 				isMoveCol = true;
-				callDeclineLight();
+				if (e->t > 0 && e->t <= 1)
+				{
+					callDeclineLight();
+				}
+			}
+			if (dynamic_cast<Cannon*>(e->obj)) {
+
+				Cannon* be = dynamic_cast<Cannon*>(e->obj);
+				if (e->t > 0 && e->t <= 1) {
+					if (e->nx < 0)
+					{
+						be->x = x + 18;
+					}
+					else
+					{
+						be->x = x - 18;
+					}
+				}
 			}
 			if (dynamic_cast<Item*>(e->obj))
 			{
@@ -367,14 +412,7 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					bridge->SetState(BRIDGE_STATE_MOVING);
 
-					//DebugOut(L"[INFO] Vô đây hoài: \n");
 				}
-				/*	else
-					{
-						isOnBridge = false;
-					}*/
-					/*this->x += bridge->dt * BRIDGE_MOVING_SPEED;*/
-
 			}
 			else
 			{

@@ -107,6 +107,7 @@ public:
 	float deltaTimeDie = 0;
 	bool isDeath = false;
 	bool isMoveCol = false;
+	//
 
 	//
 	int startJump = -1;
