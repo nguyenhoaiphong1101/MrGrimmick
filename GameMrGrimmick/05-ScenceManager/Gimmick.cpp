@@ -140,7 +140,7 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (holdJump == 1)
 	{
-		if (abs(y - startJump) <= 80)
+		if (abs(y - startJump) <= 50)
 			SetState(GIMMICK_STATE_HOLD_JUMP);
 		else
 		{
@@ -207,7 +207,11 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						isFollow = true;
 						obj = be;
 					}
-
+				/*if (ids == 3)
+				{
+					if (e->ny < 0)
+					be->SetState(BLACKENEMY_STATE_DIE);
+				}*/
 			}
 			if (dynamic_cast<Item*>(e->obj))
 			{

@@ -9,10 +9,17 @@ Worm::Worm()
 
 void Worm::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
-	top = y;
-	right = x + WORM_BBOX_WIDTH;
-	bottom = y - WORM_BBOX_HEIGHT;
+	if (state == WORM_STATE_DIE)
+	{
+		left = top = right = bottom = 0;
+	}
+	else
+	{
+		left = x;
+		top = y;
+		right = x + WORM_BBOX_WIDTH;
+		bottom = y - WORM_BBOX_HEIGHT;
+	}
 }
 
 void Worm::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -38,18 +45,20 @@ void Worm::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
-
-		if (back)
+		if (state != WORM_STATE_DIE)
 		{
-			if ( tempbacky-y >= 0.5f)
+			if (back)
 			{
-				y += 5;
-				if (vx < 0)
-					x += 12;
-				else
-					x -= 12;
-				vx = -vx;
-				nx = -nx;
+				if (tempbacky - y >= 0.5f)
+				{
+					y += 5;
+					if (vx < 0)
+						x += 12;
+					else
+						x -= 12;
+					vx = -vx;
+					nx = -nx;
+				}
 			}
 		}
 	}
@@ -101,7 +110,7 @@ void Worm::SetState(int state)
 	{
 	case WORM_STATE_DIE:
 		vx = 0;
-		vy = 0;
+		vy = 0.02f;
 		break;
 	case WORM_STATE_WALKING:
 		if (nx < 0)

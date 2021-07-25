@@ -49,6 +49,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define	OBJECT_TYPE_MEDICINE_BLACK_BOMB 15
 #define OBJECT_TYPE_FLOWER 16
 #define OBJECT_TYPE_MOVING_BRICK 17
+#define OBJECT_TYPE_ANI_BRICK 18
 
 #define OBJECT_TYPE_BULLET 20
 #define OBJECT_TYPE_NOCOLLISIONOBJECT 49
@@ -200,6 +201,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_MEDICINE_BLACK_BOMB: obj = new Item(ITEM_TYPE_MEDICINE_BLACK_BOMB); break;
 	case OBJECT_TYPE_FLOWER: obj = new Item(ITEM_TYPE_FLOWER); break;
 	case OBJECT_TYPE_FISH: obj = new Fish(); break;
+	case OBJECT_TYPE_ANI_BRICK: obj = new CAniBrick(1); break;
 	case OBJECT_TYPE_THUNDER: obj = new CThunder(); break;
 	case OBJECT_TYPE_BULLET: obj = new Bullet(); break;
 	case OBJECT_TYPE_STAR:
@@ -512,7 +514,7 @@ void CPlayScene::SetCamPos() {
 	}
 	case 3:
 	{
-		if (cx < game->GetScreenWidth() / 2)
+		if (cx < 248)
 		{
 			cx = 0;
 		}

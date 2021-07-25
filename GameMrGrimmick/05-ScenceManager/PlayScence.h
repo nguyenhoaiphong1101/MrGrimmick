@@ -25,6 +25,7 @@
 #include "Window.h"
 #include "SuspensionBridge.h"
 #include "Rocket.h"
+#include "AniBrick.h"
 #include "Bullet.h"
 #include "Thunder.h"
 #include "Star.h"
@@ -64,6 +65,7 @@ public:
 
 	CGimmick* GetPlayer() { return player; }
 	Quadtree* GetQuadtree() { return quadtree; }
+	void addObject(LPGAMEOBJECT a) { objects.push_back(a); }
 	Star* GetStar() { return star; };
 
 	//friend class CPlayScenceKeyHandler;

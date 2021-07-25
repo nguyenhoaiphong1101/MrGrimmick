@@ -67,6 +67,11 @@ void BlackEnemy::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCO
 		{
 			//ny = -0.01f;
 		}
+		if (dynamic_cast<Star*>(c->obj))
+		{
+			ny = 0;
+			nx = 0;
+		}
 		/*if (dynamic_cast<CBrick*>(c->obj))
 		{
 		if(isFly)
@@ -110,8 +115,9 @@ void BlackEnemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	coEvents.clear();
 
 	CGimmick* gimmick = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	int ids = CGame::GetInstance()->GetCurrentScene()->GetId();
 
-	if (state != BLACKENEMY_STATE_DIE)
+	if (state != BLACKENEMY_STATE_DIE && ids!=3)
 	{
 		if (vx < 0)
 		{
@@ -231,7 +237,7 @@ void BlackEnemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
-
+			
 			if (dynamic_cast<Incline*>(e->obj)) {
 
 				isIncline = true;
@@ -288,6 +294,7 @@ void BlackEnemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				isSlide = false;
 			}
+			
 		}
 		if (!isIncline) {
 
