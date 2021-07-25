@@ -429,15 +429,7 @@
 410	40010	100
 411	40011	100
 
-#====black-eneny-electric
-#walk left
-500	50004	100	50005	100	50006	100
-#sit left
-501	50007	100
-#walk right
-502	50000	100	50001	100	50002	100
-#sit right
-503	50003	100
+
 
 #Medicine
 #pink
@@ -536,18 +528,12 @@
 #pink Worm
 #walk (l,r)
 2	850	851
-#black electric enemy
-#walk(l,r), sit(l,r)
-6	500	502	501	503
+
 #black enemy
 #walk (r,l), jump(r,l), fly(r,l), die
 3	300	301	302	303	304	305	306
 
-#=====BOSS
-#attack, walk-right, be attack
-5	880	881	882
-#=====Boss-râu
-55	883
+
 
 #brick
 4	400
@@ -599,8 +585,7 @@
 #Cau-treo
 25	870	871	872	873
 
-#Window
-26	830	831
+
 
 #=======PHUC=============
 #medicine

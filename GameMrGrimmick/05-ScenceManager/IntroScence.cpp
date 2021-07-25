@@ -12,7 +12,14 @@ CStartScence::CStartScence(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	key_handler = new CStartScenceKeyHandler(this);
-	CGame::GetInstance()->SetCamPos(-5, 175);
+	if (id == 13)
+	{
+		CGame::GetInstance()->SetCamPos(0, 170);
+	}
+	else
+	{
+		CGame::GetInstance()->SetCamPos(-5, 175);
+	}
 }
 
 

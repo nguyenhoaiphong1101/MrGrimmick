@@ -254,9 +254,9 @@ void Star::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				BoomBoss* boomBoss = dynamic_cast<BoomBoss*>(e->obj);
 				if (boomBoss->live != 1)
 				{
-					boomBoss->SetState(BOOMBOSS_STATE_WALKING);
-					boomBoss->x -= 15;
-					boomBoss->y += 5;
+					boomBoss->SetState(BOOMBOSS_STATE_BEING_ATTACKED);
+					//boomBoss->x -= 15;
+					//boomBoss->y += 5;
 					boomBoss->attacking_start = 0;
 					boomBoss->live--;
 				}

@@ -234,9 +234,17 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 			if (dynamic_cast<Item*>(e->obj))
 			{
-
 				Item* item = dynamic_cast<Item*>(e->obj);
 				GetItem(item->GetType());
+				if (ids == 3)
+				{
+					if (item->GetType() == ITEM_TYPE_MEDICINE_PINK_BOMB)
+					{
+						CGame::GetInstance()->SetCamPos(0, 170);
+						CGame::GetInstance()->SwitchScene(13);
+						return;
+					}
+				}
 				item->SetState(ITEM_STATE_DISAPPEAR);
 
 			}
@@ -804,20 +812,17 @@ void CGimmick::GetItem(int type)
 		}
 		itemlist.push_back(type);
 		game->SetItem(itemlist);
-		DebugOut(L"[ERROR] Vô hud!\n");
 
 	}
 	else if (type == ITEM_TYPE_MEDICINE_ORANGE)
 	{
 		// tăng mạng
 		game->IncLight(2);
-		DebugOut(L"[ERROR] Vô tăng mạng!\n");
 	}
 	else if (type == ITEM_TYPE_FLOWER)
 	{
 		game->IncScore(50000);
 		game->IncRest(2);
-		DebugOut(L"[ERROR] Vô hoa!\n");
 	}
 
 }

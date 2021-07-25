@@ -1,12 +1,32 @@
 ﻿
 #include "Rocket.h"
+#include <algorithm>
 Rocket::Rocket()
 {
 	SetState(ROCKET_STATE_IDLING);
 	nx = 1;
 }
 
+void Rocket::CalcPotentialCollisions(
+	vector<LPGAMEOBJECT>* coObjects,
+	vector<LPCOLLISIONEVENT>& coEvents)
+{
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
 
+		if (dynamic_cast<Rocket*>(coObjects->at(i)))
+		{
+			continue;
+		}
+		if (e->t > 0 && e->t <= 1.0f)
+			coEvents.push_back(e);
+		else
+			delete e;
+	}
+
+	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
+}
 
 
 void Rocket::GetBoundingBox(float& left, float& top, float& right, float& bottom)

@@ -571,6 +571,7 @@ void CPlayScene::Unload()
 		delete objects[i];
 
 	objects.clear();
+	objectsNoColliMove.clear();
 	player = NULL;
 	star = NULL;
 
