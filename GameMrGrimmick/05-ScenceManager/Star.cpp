@@ -120,22 +120,11 @@ void Star::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
-	//if (state == STAR_STATE_READY_TO_SHOT || state == STAR_STATE_LOADING)
-	//{
-	//	DebugOut(L"[INFO] qua ải xét state \n");
-	//	CGimmick* gimmick = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-	//	this->x = gimmick->x - 2;
-	//	this->y = gimmick->y + 25;
-	//	DebugOut(L"[INFO] vị trí x %d\n",(int) gimmick->x);
-	//	DebugOut(L"[INFO] vị trí y %d\n",(int) gimmick->y);
-	//	DebugOut(L"[INFO] Satet : %d \n", state);
-	//}
+	
 
 	if (state == STAR_STATE_FLYING)
 		vy -= STAR_GRAVITY * dt;
-	// Simple fall down
-	/*if (state != STAR_STATE_IDLING)
-		vy -= STAR_GRAVITY * dt;*/
+	
 
 	if ((GetTickCount() - time_increase_converging > STAR_INC_CONVERG_TIME) && state == STAR_STATE_LOADING)
 	{
@@ -196,14 +185,6 @@ void Star::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float rdy = 0;
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		/*x += min_tx * dx + nx * 0.4f;
-		y += min_ty * dy + ny * 0.4f;*/
-
-		/*if (nx!=0) vx = 0;*/
-	/*	if (ny != 0) vy = 0;*/
-
-		// Collision logic with other objects
-		//
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
@@ -233,14 +214,6 @@ void Star::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					LimitX -= STAR_DECREASE_SPEED_X;
 					vx = -LimitY;
 				}
-
-
-				// giữ sao trên đầu
-
-				// va chạm với mấy bạn Quái (quái điện phóng điện thủ )
-				// bay trong thời gian quy định OUT 
-				// bay ra màn hình ==> reset 
-				// vo ham Hoa Khoi r ma k quay lai dem gio 
 			}
 			// chạm quái 
 			else if (dynamic_cast<BlackEnemy*>(e->obj))
