@@ -247,7 +247,7 @@ void Star::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				BlackEnemy* black = dynamic_cast<BlackEnemy*>(e->obj);
 				black->SetState(BLACKENEMY_STATE_DIE);
-				this->SetState(STAR_STATE_SMOKE);
+				//this->SetState(STAR_STATE_SMOKE);
 			}
 			else if (dynamic_cast<BoomBoss*>(e->obj))
 			{

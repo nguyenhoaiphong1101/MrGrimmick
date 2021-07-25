@@ -530,6 +530,7 @@ void CGimmick::callDeclineLight()
 		else
 		{
 			// stun???
+			y += 7;
 			CGame::GetInstance()->IncLight(-1);
 			StartUntouchable();
 		}
@@ -765,6 +766,10 @@ void CGimmick::GetBoundingBox(float& left, float& top, float& right, float& bott
 	left = x;
 	top = y;
 	right = x + GIMMICK_BIG_BBOX_WIDTH;
+	if (untouchable == 1)
+	{
+		bottom = y - 25;
+	}else
 	bottom = y - GIMMICK_BIG_BBOX_HEIGHT;
 }
 
