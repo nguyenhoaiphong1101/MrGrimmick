@@ -1,5 +1,6 @@
 
 #include "Worm.h"
+#include "Game.h"
 Worm::Worm()
 {
 	nx = 1;
@@ -89,14 +90,29 @@ void Worm::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void Worm::Render()
 {
 	int ani = WORM_ANI_WALK_RIGHT;
-	if (state == WORM_STATE_WALKING)
+	int ids = CGame::GetInstance()->GetCurrentScene()->GetId();
+	if (ids == 4)
 	{
-		if (nx > 0)
-			ani = WORM_ANI_WALK_RIGHT;
+		if (state == WORM_STATE_WALKING)
+		{
+			ani = 0;
+		}
 		else
-			ani = WORM_ANI_WALK_LEFT;
+		{
+			if(state == WORM_STATE_DIE)
+			ani = 1;
+		}
 	}
-
+	else
+	{
+		if (state == WORM_STATE_WALKING)
+		{
+			if (nx > 0)
+				ani = WORM_ANI_WALK_RIGHT;
+			else
+				ani = WORM_ANI_WALK_LEFT;
+		}
+	}
 
 	animation_set->at(ani)->Render(x, y);
 
@@ -113,13 +129,17 @@ void Worm::SetState(int state)
 		vy = 0.02f;
 		break;
 	case WORM_STATE_WALKING:
-		if (nx < 0)
+		int ids = CGame::GetInstance()->GetCurrentScene()->GetId();
+		if (ids != 4)
 		{
-			vx = -WORM_WALKING_SPEED;
-		}
-		else
-		{
-			vx = WORM_WALKING_SPEED;
+			if (nx < 0)
+			{
+				vx = -WORM_WALKING_SPEED;
+			}
+			else
+			{
+				vx = WORM_WALKING_SPEED;
+			}
 		}
 	}
 }

@@ -611,6 +611,11 @@ void CPlayScene::SetCamPos() {
 				cx -= game->GetScreenWidth() / 2;
 			}
 		}
+		else if (cy > 192 + game->GetScreenHeight() * 3 - 90)
+		{
+			cx -= game->GetScreenWidth() / 2;
+			cy = 192 + game->GetScreenHeight() * 3 - 90;
+		}
 		break;
 	}
 

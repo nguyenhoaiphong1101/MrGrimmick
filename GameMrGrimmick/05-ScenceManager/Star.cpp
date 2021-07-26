@@ -134,7 +134,7 @@ void Star::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if ((GetTickCount() - time_increase_converging > STAR_INC_CONVERG_TIME) && state == STAR_STATE_LOADING)
 	{
 
-		if (converging_level > 50)
+		if (converging_level > 20)
 		{
 
 			/*converging_level = 0;*/
@@ -294,11 +294,11 @@ void Star::Render()
 
 		this->x -=  2;
 		this->y +=  25;*/
-		animation_set->at(STAR_ANI_SMALL_STAR)->Render(this->x + STAR_SMALL_MID_X0 - converging_level * STAR_SMALL_MID_X0 / 50 + 5, this->y + STAR_SMALL_MID_Y0 - converging_level * STAR_SMALL_MID_Y0 / 50 - 7, alpha);
-		animation_set->at(STAR_ANI_SMALL_STAR)->Render(this->x + STAR_SMALL_LEFT1_X0 - converging_level * STAR_SMALL_LEFT1_X0 / 50 + 5, this->y + STAR_SMALL_LEFT1_Y0 - converging_level * STAR_SMALL_LEFT1_Y0 / 50 - 7, alpha);
-		animation_set->at(STAR_ANI_SMALL_STAR)->Render(this->x + STAR_SMALL_LEFT2_X0 - converging_level * STAR_SMALL_LEFT2_X0 / 50 + 5, this->y + STAR_SMALL_LEFT2_Y0 - converging_level * STAR_SMALL_LEFT2_Y0 / 50 - 7, alpha);
-		animation_set->at(STAR_ANI_SMALL_STAR)->Render(this->x + STAR_SMALL_RIGHT1_X0 - converging_level * STAR_SMALL_RIGHT1_X0 / 50 + 5, this->y + STAR_SMALL_RIGHT1_Y0 - converging_level * STAR_SMALL_RIGHT1_Y0 / 50 - 7, alpha);
-		animation_set->at(STAR_ANI_SMALL_STAR)->Render(this->x + STAR_SMALL_RIGHT2_X0 - converging_level * STAR_SMALL_RIGHT2_X0 / 50 + 5, this->y + STAR_SMALL_RIGHT2_Y0 - converging_level * STAR_SMALL_RIGHT2_Y0 / 50 - 7, alpha);
+		animation_set->at(STAR_ANI_SMALL_STAR)->Render(this->x + STAR_SMALL_MID_X0 - converging_level * STAR_SMALL_MID_X0 / 20 + 5, this->y + STAR_SMALL_MID_Y0 - converging_level * STAR_SMALL_MID_Y0 / 20 - 7, alpha);
+		animation_set->at(STAR_ANI_SMALL_STAR)->Render(this->x + STAR_SMALL_LEFT1_X0 - converging_level * STAR_SMALL_LEFT1_X0 / 20 + 5, this->y + STAR_SMALL_LEFT1_Y0 - converging_level * STAR_SMALL_LEFT1_Y0 / 20 - 7, alpha);
+		animation_set->at(STAR_ANI_SMALL_STAR)->Render(this->x + STAR_SMALL_LEFT2_X0 - converging_level * STAR_SMALL_LEFT2_X0 / 20 + 5, this->y + STAR_SMALL_LEFT2_Y0 - converging_level * STAR_SMALL_LEFT2_Y0 / 20 - 7, alpha);
+		animation_set->at(STAR_ANI_SMALL_STAR)->Render(this->x + STAR_SMALL_RIGHT1_X0 - converging_level * STAR_SMALL_RIGHT1_X0 / 20 + 5, this->y + STAR_SMALL_RIGHT1_Y0 - converging_level * STAR_SMALL_RIGHT1_Y0 / 20 - 7, alpha);
+		animation_set->at(STAR_ANI_SMALL_STAR)->Render(this->x + STAR_SMALL_RIGHT2_X0 - converging_level * STAR_SMALL_RIGHT2_X0 / 20 + 5, this->y + STAR_SMALL_RIGHT2_Y0 - converging_level * STAR_SMALL_RIGHT2_Y0 / 20 - 7, alpha);
 		/*DebugOut(L"[INFO] vị trí  x %d\n", (int)gimmick->x);
 		DebugOut(L"[INFO] vị trí  y %d\n", (int)gimmick->y);
 		DebugOut(L"[INFO] vị trí render x %d\n", (int)x);
