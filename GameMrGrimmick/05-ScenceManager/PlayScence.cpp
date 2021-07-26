@@ -538,10 +538,66 @@ void CPlayScene::SetCamPos() {
 	}
 	case 4:
 	{
-		cx -= game->GetScreenWidth() / 2;
-		cy += game->GetScreenHeight() / 2;
+		//cx -= game->GetScreenWidth() / 2;
+		//cy += game->GetScreenHeight() / 2;
 		/*cx = 0;
 		cy = 960;*/
+		if (cy < 192)
+		{
+			cy = 192;
+			if (cx + game->GetScreenWidth() / 2 > 1536)
+			{
+				cx = 1536 - game->GetScreenWidth();
+			}
+			else if(cx - game->GetScreenWidth()/2<1024)
+			{
+				cx = 1024;
+			}
+			else
+			{
+				cx -= game->GetScreenWidth() / 2;
+			}
+		}
+		else if (cy > 192 && cy < 192 + game->GetScreenHeight()-30)
+		{
+			cy = 192 + game->GetScreenHeight()-30;
+			if (cx < game->GetScreenWidth() / 2)
+			{
+				cx = 0;
+			}
+			else
+			{
+				cx -= game->GetScreenWidth() / 2;
+			}
+		}
+		else if (cy > 192 + game->GetScreenHeight() - 30 && cy < 192 + game->GetScreenHeight() * 2-60)
+		{
+			cy = 192 + game->GetScreenHeight() * 2-60;
+			if (cx < game->GetScreenWidth() / 2)
+			{
+				cx = 0;
+			}
+			else if (cx + game->GetScreenWidth() / 2 > 2048)
+			{
+				cx = 2048 - game->GetScreenWidth();
+			}
+			else
+			{
+				cx -= game->GetScreenWidth() / 2;
+			}
+		}
+		else if (cy > 192 + game->GetScreenHeight() - 60 * 2 && cy < 192 + game->GetScreenHeight() * 3-90)
+		{
+			cy = 192 + game->GetScreenHeight() * 3-90;
+			if (cx < game->GetScreenWidth() / 2)
+			{
+				cx = 0;
+			}
+			else
+			{
+				cx -= game->GetScreenWidth() / 2;
+			}
+		}
 		break;
 	}
 

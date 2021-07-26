@@ -154,7 +154,7 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (holdJump == 1)
 	{
-		if (abs(y - startJump) <= 60)
+		if (abs(y - startJump) <= 70)
 			SetState(GIMMICK_STATE_HOLD_JUMP);
 		else
 		{
