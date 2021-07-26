@@ -65,6 +65,11 @@ void CGimmick::FollowObject(LPGAMEOBJECT obj)
 			isFollow = false;
 		}
 	}
+	else if (dynamic_cast<BlackBird*>(obj))
+	{
+		vx = obj->GetVx();
+		y = obj->GetY() + 2;
+	}
 	else
 	{
 		vx = obj->GetVx();
@@ -107,6 +112,15 @@ void CGimmick::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLL
 			if(c->ny<0)
 			ny = 0;
 		}
+		if (dynamic_cast<ElectricBoom*>(c->obj))
+		{
+			if(c->ny<0)
+			ny = 0;
+		}
+		/*if (dynamic_cast<CBulletBigCannon*>(c->obj))
+		{
+			ny = 0;
+		}*/
 		
 	}
 
@@ -260,8 +274,15 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				CBulletBigCannon* mb = dynamic_cast<CBulletBigCannon*>(e->obj);
 				if (e->t > 0 && e->t <= 1)
 				{
-					isFollow = true;
-					obj = mb;
+					if (mb->isBigCannon)
+					{
+						isFollow = true;
+						obj = mb;
+					}
+					if (e->ny < 0)
+					{
+						callDeclineLight();
+					}
 				}
 			}
 			if (dynamic_cast<ElectricBoom*>(e->obj))
@@ -269,10 +290,7 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				ElectricBoom* be = dynamic_cast<ElectricBoom*>(e->obj);
 				if (e->t > 0 && e->t <= 1)
 				{
-					if (e->nx != 0)
-					{
-						callDeclineLight();
-					}
+					callDeclineLight();
 				}
 			}
 			if (dynamic_cast<Bullet*>(e->obj)) {
@@ -287,6 +305,24 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (e->t > 0 && e->t <= 1)
 				{
 					SetPosition(be->teleX,be->teleY);
+				}
+			}
+			if (dynamic_cast<BlackBird*>(e->obj)) {
+
+				BlackBird* blackbird = dynamic_cast<BlackBird*>(e->obj);
+
+				if (e->t > 0 && e->t <= 1)
+				{
+					if (e->nx != 0)
+					{
+						blackbird->y -= 10;
+						//DebugOut(L" Bay di chim  \n");
+						blackbird->SetState(BLACKBIRD_STATE_FLYING);
+					}
+					if (e->ny > 0) {
+						isFollow = true;
+						obj = blackbird;
+					}
 				}
 			}
 			if (dynamic_cast<Cannon*>(e->obj)) {
@@ -447,6 +483,16 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				CThunder* thunder = dynamic_cast<CThunder*>(e->obj);
 				this->SetState(GIMMICK_STATE_DIE);
 
+			}
+			if (dynamic_cast<Turtle*>(e->obj))
+			{
+				Turtle* greenTurtle = dynamic_cast<Turtle*>(e->obj);
+				if (greenTurtle->state != TURTLE_STATE_DIE)
+				{
+					callDeclineLight();
+				}
+				else {
+				}
 			}
 			if (dynamic_cast<SuspensionBridge*>(e->obj))
 			{

@@ -297,7 +297,6 @@ void BlackEnemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CThunder*>(e->obj))
 			{
 				SetState(BLACKENEMY_STATE_DIE);
-				return;
 			}
 		}
 		if (!isIncline) {

@@ -54,6 +54,11 @@ void Star::FilterCollision(
 			ny = 0;
 			nx = 0;
 		}
+		if (dynamic_cast<Turtle*>(c->obj))
+		{
+			ny = 0;
+			nx = 0;
+		}
 		if (dynamic_cast<Item*>(c->obj))
 		{
 			ny = 0;
@@ -251,6 +256,13 @@ void Star::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				Worm* worm = dynamic_cast<Worm*>(e->obj);
 				CGame::GetInstance()->IncScore(90);
 				worm->SetState(WORM_STATE_DIE);
+				this->SetState(STAR_STATE_SMOKE);
+			}
+			else if (dynamic_cast<Turtle*>(e->obj))
+			{
+				Turtle* be = dynamic_cast<Turtle*>(e->obj);
+				CGame::GetInstance()->IncScore(90);
+				be->SetState(TURTLE_STATE_DIE);
 				this->SetState(STAR_STATE_SMOKE);
 			}
 			else if (dynamic_cast<CThunder*>(e->obj))

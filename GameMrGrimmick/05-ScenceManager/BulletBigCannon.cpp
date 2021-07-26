@@ -3,12 +3,38 @@
 #include "Brick.h"
 #include "Incline.h"
 #include "PlayScence.h"
+#include <algorithm>
 
 CBulletBigCannon::CBulletBigCannon()
 {
 	SetState(BULLET_BIG_STATE_DISAPPEAR);
 	nx = 1;
 }
+
+
+void CBulletBigCannon::CalcPotentialCollisions(
+	vector<LPGAMEOBJECT>* coObjects,
+	vector<LPCOLLISIONEVENT>& coEvents)
+{
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CBoat*>(coObjects->at(i)))
+		{
+			continue;
+		}
+		LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
+
+		if (e->t > 0 && e->t <= 1.0f)
+			coEvents.push_back(e);
+		else
+			delete e;
+	}
+
+	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
+}
+
+
+
 void CBulletBigCannon::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	if (state == BULLET_BIG_STATE_DISAPPEAR)
@@ -28,24 +54,28 @@ void CBulletBigCannon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt, coObjects);
 	// Simple fall down
 	
-
-	
 	// thời gian hiện animation nổ
 	if (state == BULLET_BIG_STATE_DESTROY)
 	{
 		if ((GetTickCount() - booming_start > 500))
 		{
+			isDis = true;
 			SetState(BULLET_BIG_STATE_DISAPPEAR);
 			booming_start = 0;
 		}
 	}
-	x += dx;
-	y += dy;
-	
+
+	if (!isDis)
+	{
+		x += dx;
+		y += dy;
+	}
+
+	if(!isDis)
 	if (!isBigCannon)
 	{
 		CGimmick* gimmick = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-		if (gimmick->x > x - 30)
+		if ((int)gimmick->x == (int)x - 30)
 		{
 			SetState(BULLET_BIG_STATE_IDLING);
 		}
@@ -80,11 +110,23 @@ void CBulletBigCannon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
-
-			if (dynamic_cast<CBrick*>(e->obj))
+			if (!isDis)
 			{
-				if (state != BULLET_BIG_STATE_DESTROY)
-					SetState(BULLET_BIG_STATE_DESTROY);
+				if (dynamic_cast<CBrick*>(e->obj))
+				{
+					if (state != BULLET_BIG_STATE_DESTROY)
+						SetState(BULLET_BIG_STATE_DESTROY);
+				}
+				/*if (dynamic_cast<CBoat*>(e->obj))
+				{
+					if (state != BULLET_BIG_STATE_DESTROY)
+						SetState(BULLET_BIG_STATE_DESTROY);
+				}*/
+				if (dynamic_cast<CThunder*>(e->obj))
+				{
+					if (state != BULLET_BIG_STATE_DESTROY)
+						SetState(BULLET_BIG_STATE_DESTROY);
+				}
 			}
 		}
 	}
@@ -120,6 +162,7 @@ void CBulletBigCannon::SetState(int state)
 	{
 	case BULLET_BIG_STATE_DESTROY:
 		vx = 0;
+		vy = 0;
 		StartBooming();
 		break;
 	case BULLET_BIG_STATE_IDLING:

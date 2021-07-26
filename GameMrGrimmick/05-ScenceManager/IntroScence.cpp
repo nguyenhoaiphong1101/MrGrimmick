@@ -264,14 +264,23 @@ void CStartScenceKeyHandler::OnKeyDown(int KeyCode)
 	//CMenuIntro* menu = ((CStartScence*)scence)->GetMenuIntro();
 	switch (KeyCode)
 	{
-	case DIK_W:
+	case DIK_2:
 		CGame::GetInstance()->SwitchScene(13);
 		break;
 	case DIK_1:
+		CGame::GetInstance()->SwitchScene(12);
+		break;
+	case DIK_6:
 		CGame::GetInstance()->SwitchScene(1);
 		break;
-	case DIK_2:
-		CGame::GetInstance()->SwitchScene(12);
+	case DIK_7:
+		CGame::GetInstance()->SwitchScene(2);
+		break;
+	case DIK_8:
+		CGame::GetInstance()->SwitchScene(3);
+		break;
+	case DIK_9:
+		CGame::GetInstance()->SwitchScene(4);
 		break;
 	}
 }

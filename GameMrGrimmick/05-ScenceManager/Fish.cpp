@@ -1,11 +1,19 @@
 
 #include "Fish.h"
 #include "Utils.h"
-Fish::Fish()
+Fish::Fish(int type)
 {
     //SetState(FISH_STATE_SWIMMING_LEFT);
-    nx = 1;
-    vx = FISH_SWIMMING_SPEED;
+    if (type == 1)
+    {
+        nx = 1;
+        vx = FISH_SWIMMING_SPEED;
+    }
+    else
+    {
+        nx = -1;
+        vx = -FISH_SWIMMING_SPEED;
+    }
     vy = 0;
     StartSwimming();
 }

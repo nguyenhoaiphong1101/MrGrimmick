@@ -28,7 +28,7 @@ class Fish :
     DWORD swimming_start = 0;
     //virtual void FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLISIONEVENT>& coEventsResult, float& min_tx, float& min_ty, float& nx, float& ny, float& rdx, float& rdy);
 public:
-    Fish();
+    Fish(int type);
 
     void StartSwimming() { swimming_start = GetTickCount(); }
     virtual void SetState(int state);

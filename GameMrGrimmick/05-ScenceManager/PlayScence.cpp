@@ -59,8 +59,11 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_SLIDE_RIGHT 51
 #define OBJECT_TYPE_SLIDE_LEFT	52
 
-#define OBJECT_TYPE_FISH 60
+#define OBJECT_TYPE_FISH_RIGHT 60
+#define OBJECT_TYPE_FISH_LEFT 61
 #define OBJECT_TYPE_THUNDER 63
+#define OBJECT_TYPE_BLACKBIRD	70
+#define OBJECT_TYPE_TURTLE	71
 
 #define OBJECT_TYPE_STAR	21
 #define OBJECT_TYPE_INCLINE	22
@@ -198,16 +201,19 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_WINDOW: obj = new Window(); break;
 	case OBJECT_TYPE_SUSPENSIONBRIDGE: obj = new SuspensionBridge(); break;
 	case OBJECT_TYPE_ROCKET: obj = new Rocket(); break;
+	case OBJECT_TYPE_BLACKBIRD: obj = new BlackBird(); break;
 	case OBJECT_TYPE_FLOATBOX: obj = new FloatBox(); break;
 	case OBJECT_TYPE_MEDICINE_PINK: obj = new Item(ITEM_TYPE_MEDICINE_PINK); break;
 	case OBJECT_TYPE_MEDICINE_ORANGE: obj = new Item(ITEM_TYPE_MEDICINE_ORANGE); break;
 	case OBJECT_TYPE_MEDICINE_PINK_BOMB: obj = new Item(ITEM_TYPE_MEDICINE_PINK_BOMB); break;
 	case OBJECT_TYPE_MEDICINE_BLACK_BOMB: obj = new Item(ITEM_TYPE_MEDICINE_BLACK_BOMB); break;
 	case OBJECT_TYPE_FLOWER: obj = new Item(ITEM_TYPE_FLOWER); break;
-	case OBJECT_TYPE_FISH: obj = new Fish(); break;
+	case OBJECT_TYPE_FISH_RIGHT: obj = new Fish(1); break;
+	case OBJECT_TYPE_FISH_LEFT: obj = new Fish(2); break;
 	case OBJECT_TYPE_ANI_BRICK: obj = new CAniBrick(1); break;
 	case OBJECT_TYPE_THUNDER: obj = new CThunder(); break;
 	case OBJECT_TYPE_BULLET: obj = new Bullet(); break;
+	case OBJECT_TYPE_TURTLE: obj = new Turtle(); break;
 	case OBJECT_TYPE_BULLET_BIG: obj = new CBulletBigCannon(); break;
 	case OBJECT_TYPE_HEIGHT_CANNON: obj = new CBigCannon(); break;
 	case OBJECT_TYPE_BOAT: obj = new CBoat(); break;
@@ -273,7 +279,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 
 	obj->SetAnimationSet(ani_set);
-	if (object_type == OBJECT_TYPE_FISH)
+	if (object_type == OBJECT_TYPE_FISH_RIGHT || object_type == OBJECT_TYPE_FISH_LEFT)
 	{
 		objectsNoColliMove.push_back(obj);
 	}
@@ -696,6 +702,18 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		if (star != nullptr) {
 			star->GetReady();
 		}
+		break;
+	case DIK_6:
+		CGame::GetInstance()->SwitchScene(1);
+		break;
+	case DIK_7:
+		CGame::GetInstance()->SwitchScene(2);
+		break;
+	case DIK_8:
+		CGame::GetInstance()->SwitchScene(3);
+		break;
+	case DIK_9:
+		CGame::GetInstance()->SwitchScene(4);
 		break;
 	}
 }
