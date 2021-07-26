@@ -65,6 +65,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_STAR	21
 #define OBJECT_TYPE_INCLINE	22
 #define OBJECT_TYPE_PIPES	23
+#define OBJECT_TYPE_TELEPORT	24
 
 #define MAX_SCENE_LINE 1024
 
@@ -206,6 +207,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_THUNDER: obj = new CThunder(); break;
 	case OBJECT_TYPE_BULLET: obj = new Bullet(); break;
 	case OBJECT_TYPE_BOAT: obj = new CBoat(); break;
+	case OBJECT_TYPE_TELEPORT: {
+		float teleX = atof(tokens[4].c_str());
+		float teleY = atof(tokens[5].c_str());
+		obj = new CTeleport(teleX, teleY);
+		break;
+	}
 	case OBJECT_TYPE_STAR:
 		if (star != NULL)
 		{

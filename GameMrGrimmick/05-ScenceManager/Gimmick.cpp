@@ -272,6 +272,13 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					callDeclineLight();
 				}
 			}
+			if (dynamic_cast<CTeleport*>(e->obj)) {
+				CTeleport* be = dynamic_cast<CTeleport*>(e->obj);
+				if (e->t > 0 && e->t <= 1)
+				{
+					SetPosition(be->teleX,be->teleY);
+				}
+			}
 			if (dynamic_cast<Cannon*>(e->obj)) {
 
 				Cannon* be = dynamic_cast<Cannon*>(e->obj);

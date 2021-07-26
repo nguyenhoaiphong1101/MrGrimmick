@@ -152,6 +152,7 @@
     <ClCompile Include="Slide.cpp" />
     <ClCompile Include="Star.cpp" />
     <ClCompile Include="SuspensionBridge.cpp" />
+    <ClCompile Include="Teleport.cpp" />
     <ClCompile Include="Thunder.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="Slide.h" />
     <ClInclude Include="Star.h" />
     <ClInclude Include="SuspensionBridge.h" />
+    <ClInclude Include="Teleport.h" />
     <ClInclude Include="Thunder.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Game.h" />

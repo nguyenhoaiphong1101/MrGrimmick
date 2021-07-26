@@ -23,6 +23,7 @@
 #include "Electricboom.h"
 #include "Worm.h"
 #include "Hud.h"
+#include "Teleport.h"
 #include "Window.h"
 #include "SuspensionBridge.h"
 #include "Rocket.h"
