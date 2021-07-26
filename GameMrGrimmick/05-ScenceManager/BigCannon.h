@@ -19,6 +19,7 @@
 class CBigCannon :
 	public CGameObject
 {
+	vector<CBulletBigCannon*> ListBomb;
 	float getTimeFire = -1;
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -26,11 +27,14 @@ class CBigCannon :
 	DWORD booming_start = 0;
 	//virtual void FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLISIONEVENT>& coEventsResult, float& min_tx, float& min_ty, float& nx, float& ny, float& rdx, float& rdy);
 public:
+	DWORD timeShoot = 0;
+
+	int bullet = 0;
 	bool isGimmick = false;
 	bool isFly = false;
 	int isFlying = 0;
 	void StartBooming() { booming_start = GetTickCount(); }
-
+	void Fire();
 	CBigCannon();
 	virtual void SetState(int state);
 };

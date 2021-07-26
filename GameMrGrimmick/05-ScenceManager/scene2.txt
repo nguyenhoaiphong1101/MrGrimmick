@@ -286,7 +286,8 @@
 #boat
 3001	3001
 
-
+#bomb
+71	701	865
 #medicine
 #pink medicine
 60	600

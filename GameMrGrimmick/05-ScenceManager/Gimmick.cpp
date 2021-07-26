@@ -68,7 +68,7 @@ void CGimmick::FollowObject(LPGAMEOBJECT obj)
 	else
 	{
 		vx = obj->GetVx();
-		if (!dynamic_cast<SuspensionBridge*>(obj)&& !dynamic_cast<CBoat*>(obj))
+		if (!dynamic_cast<SuspensionBridge*>(obj)&& !dynamic_cast<CBoat*>(obj)&& !dynamic_cast<CBulletBigCannon*>(obj))
 		{
 			y = obj->GetY() + GIMMICK_BIG_BBOX_HEIGHT + 0.4f;
 		}
@@ -255,6 +255,15 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					obj = mb;
 				}
 			}
+			if (dynamic_cast<CBulletBigCannon*>(e->obj)) {
+
+				CBulletBigCannon* mb = dynamic_cast<CBulletBigCannon*>(e->obj);
+				if (e->t > 0 && e->t <= 1)
+				{
+					isFollow = true;
+					obj = mb;
+				}
+			}
 			if (dynamic_cast<ElectricBoom*>(e->obj))
 			{
 				ElectricBoom* be = dynamic_cast<ElectricBoom*>(e->obj);
@@ -301,6 +310,8 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						if (e->ny > 0)
 						{
 							heightCannon->isGimmick = true;
+							if(heightCannon->timeShoot==0)
+							heightCannon->timeShoot = GetTickCount();
 						}
 						else
 						{

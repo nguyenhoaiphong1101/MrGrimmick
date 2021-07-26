@@ -1,8 +1,18 @@
-#include "BigCannon.h"
+﻿#include "BigCannon.h"
 #include "Utils.h"
 
 CBigCannon::CBigCannon()
 {
+	for (int i = 0; i < 6; i++) {
+
+		CBulletBigCannon* bomb = new CBulletBigCannon();
+		CAnimationSets* ani = CAnimationSets::GetInstance();
+		LPANIMATION_SET ani_set = ani->Get(71);
+		bomb->SetAnimationSet(ani_set);
+		bomb->isBigCannon = true;
+		ListBomb.push_back(bomb);
+		((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->addObject(bomb);
+	}
 	SetState(BIG_CANNON_STATE_IDLE);
 	nx = 1;
 }
@@ -39,6 +49,16 @@ void CBigCannon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 
+	if (timeShoot != 0) {
+		if (GetTickCount() - timeShoot > 4000)
+		{
+			DebugOut(L"Bắn\n");
+			Fire();
+			timeShoot = GetTickCount();
+		}
+	}
+
+
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -59,7 +79,6 @@ void CBigCannon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else
 	{
-
 		// land ...fly
 		float min_tx, min_ty, nx = 0, ny;
 		float rdx = 0;
@@ -92,21 +111,7 @@ void CBigCannon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CBigCannon::Render()
 {
-	/*int ani = HeightCannon_ANI_GREEN_LEFT;
-	if (state == HeightCannon_STATE_GREEN)
-	{
-		if (nx > 0)
-			ani = HeightCannon_ANI_GREEN_RIGHT;
-		else
-			ani = HeightCannon_ANI_GREEN_LEFT;
-	}
-	else if (state == HeightCannon_STATE_RED)
-	{
-		if (nx > 0)
-			ani = HeightCannon_ANI_RED_RIGHT;
-		else
-			ani = HeightCannon_ANI_RED_LEFT;
-	}*/
+	
 	int ani = BIG_CANNON_ANI_IDLE;
 	if (state == BIG_CANNON_STATE_IDLE)
 	{
@@ -132,5 +137,16 @@ void CBigCannon::SetState(int state)
 	case BIG_CANNON_STATE_IDLE:
 		//StartBooming();
 		break;
+	}
+}
+
+
+void CBigCannon::Fire()
+{
+	if (bullet < 6)
+	{
+		ListBomb[bullet]->SetPosition(x -16,y);
+		ListBomb[bullet]->SetState(BULLET_BIG_STATE_FALLING);
+		bullet++;
 	}
 }

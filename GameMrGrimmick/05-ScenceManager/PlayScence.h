@@ -7,6 +7,7 @@
 #include "Gimmick.h"
 #include "Goomba.h"
 #include "Koopas.h"
+#include "BulletBigCannon.h"
 #include "Map.h"
 #include "MovingBrick.h"
 #include "Grid.h"
