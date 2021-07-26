@@ -297,7 +297,7 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					{
 						be->x = x + 18;
 					}
-					else
+					else if(e->nx>0)
 					{
 						be->x = x - 18;
 					}

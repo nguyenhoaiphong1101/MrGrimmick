@@ -163,6 +163,12 @@ bool CGame::ObjectInCamera(CGameObject* object)
 		if (e->GetState() == WORM_STATE_DIE)
 			return true;
 	}
+	if (dynamic_cast<CBulletBigCannon*>(object))
+	{
+		CBulletBigCannon* e = dynamic_cast<CBulletBigCannon*>(object);
+		if (e->GetState() == BULLET_BIG_STATE_DISAPPEAR)
+			return true;
+	}
 	float l, t, r, b;
 	object->GetBoundingBox(l, t, r, b);
 	return !(r < cam_x - 16.0f || l > cam_x + screen_width + 16.0f || t < cam_y - screen_height - 16.0f || b > cam_y + 16.0f);

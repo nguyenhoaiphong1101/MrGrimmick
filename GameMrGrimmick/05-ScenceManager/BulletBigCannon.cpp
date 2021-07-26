@@ -2,6 +2,7 @@
 #include "Utils.h"
 #include "Brick.h"
 #include "Incline.h"
+#include "PlayScence.h"
 
 CBulletBigCannon::CBulletBigCannon()
 {
@@ -26,10 +27,9 @@ void CBulletBigCannon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
 	// Simple fall down
-	if (!isBigCannon)
-		vy -= BULLET_BIG_GRAVITY * dt;
+	
 
-
+	
 	// thời gian hiện animation nổ
 	if (state == BULLET_BIG_STATE_DESTROY)
 	{
@@ -41,6 +41,15 @@ void CBulletBigCannon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	x += dx;
 	y += dy;
+	
+	if (!isBigCannon)
+	{
+		CGimmick* gimmick = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+		if (gimmick->x > x - 30)
+		{
+			SetState(BULLET_BIG_STATE_IDLING);
+		}
+	}
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -114,9 +123,10 @@ void CBulletBigCannon::SetState(int state)
 		StartBooming();
 		break;
 	case BULLET_BIG_STATE_IDLING:
-
+		vy = -0.15f;
 		break;
 	case BULLET_BIG_STATE_FALLING:
 		vx = -0.25f;
+		break;
 	}
 }
