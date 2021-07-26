@@ -68,7 +68,7 @@ void CGimmick::FollowObject(LPGAMEOBJECT obj)
 	else
 	{
 		vx = obj->GetVx();
-		if (!dynamic_cast<SuspensionBridge*>(obj))
+		if (!dynamic_cast<SuspensionBridge*>(obj)&& !dynamic_cast<CBoat*>(obj))
 		{
 			y = obj->GetY() + GIMMICK_BIG_BBOX_HEIGHT + 0.4f;
 		}
@@ -242,6 +242,16 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (e->t > 0 && e->t <= 1)
 				{
 					callDeclineLight();
+				}
+			}
+			if (dynamic_cast<CBoat*>(e->obj)) {
+
+				CBoat* mb = dynamic_cast<CBoat*>(e->obj);
+				if (e->t > 0 && e->t <= 1)
+				{
+					mb->moving = true;
+					isFollow = true;
+					obj = mb;
 				}
 			}
 			if (dynamic_cast<ElectricBoom*>(e->obj))
@@ -651,12 +661,14 @@ void CGimmick::KeyState(BYTE* state)
 
 void CGimmick::SetState(int state)
 {
+	int ids = CGame::GetInstance()->GetCurrentScene()->GetId();
 	CGame* game = CGame::GetInstance();
 	CGameObject::SetState(state);
 
 	switch (state)
 	{
 	case GIMMICK_STATE_WALKING_RIGHT:
+		
 		vx = GIMMICK_WALKING_SPEED;
 		nx = 1;
 		break;
@@ -683,6 +695,7 @@ void CGimmick::SetState(int state)
 		nx = -1;
 		break;
 	case GIMMICK_STATE_WALKING_LEFT:
+		
 		vx = -GIMMICK_WALKING_SPEED;
 		nx = -1;
 		break;

@@ -14,6 +14,7 @@
 #include "Cannon.h"
 #include "FloatBox.h"
 #include "Item.h"
+#include "Boat.h"
 #include "NoCollisionObject.h"
 #include "Fish.h"
 #include "Slide.h"

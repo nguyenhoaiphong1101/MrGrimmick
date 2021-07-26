@@ -50,6 +50,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_FLOWER 16
 #define OBJECT_TYPE_MOVING_BRICK 17
 #define OBJECT_TYPE_ANI_BRICK 18
+#define OBJECT_TYPE_BOAT 19
 
 #define OBJECT_TYPE_BULLET 20
 #define OBJECT_TYPE_NOCOLLISIONOBJECT 49
@@ -204,6 +205,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_ANI_BRICK: obj = new CAniBrick(1); break;
 	case OBJECT_TYPE_THUNDER: obj = new CThunder(); break;
 	case OBJECT_TYPE_BULLET: obj = new Bullet(); break;
+	case OBJECT_TYPE_BOAT: obj = new CBoat(); break;
 	case OBJECT_TYPE_STAR:
 		if (star != NULL)
 		{
