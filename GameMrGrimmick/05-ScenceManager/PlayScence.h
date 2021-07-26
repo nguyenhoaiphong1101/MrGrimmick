@@ -24,6 +24,7 @@
 #include "Worm.h"
 #include "Hud.h"
 #include "Teleport.h"
+#include "BigCannon.h"
 #include "Window.h"
 #include "SuspensionBridge.h"
 #include "Rocket.h"

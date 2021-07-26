@@ -107,6 +107,7 @@ void CGimmick::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLL
 			if(c->ny<0)
 			ny = 0;
 		}
+		
 	}
 
 	if (min_ix >= 0) coEventsResult.push_back(coEvents[min_ix]);
@@ -148,7 +149,7 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	if (holdJump != 1 && !isIncline && !isPiping && !isFollow && state!=GIMMICK_STATE_DIE)
+	if (holdJump != 1 && !isIncline && !isPiping && !isFollow && state!=GIMMICK_STATE_DIE )
 		vy -= GIMMICK_GRAVITY * dt;
 
 
@@ -292,6 +293,28 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						be->x = x - 18;
 					}
 				}
+			}
+			if (dynamic_cast<CBigCannon*>(e->obj))
+			{
+					CBigCannon* heightCannon = dynamic_cast<CBigCannon*>(e->obj);
+					if (e->t > 0 && e->t <= 1) {
+						if (e->ny > 0)
+						{
+							heightCannon->isGimmick = true;
+						}
+						else
+						{
+							heightCannon->isGimmick = false;
+							if (e->nx > 0)
+							{
+								heightCannon->vx = -0.03f;
+								this->isPush = true;
+							}
+						}
+					}
+			}
+			else {
+				this->isPush = false;
 			}
 			if (dynamic_cast<Item*>(e->obj))
 			{

@@ -108,7 +108,8 @@ public:
 	bool isDeath = false;
 	bool isMoveCol = false;
 	//
-
+	bool isPush = false;
+	bool isOnCannon = false;
 	//
 	int startJump = -1;
 	int holdJump = 0;
