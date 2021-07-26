@@ -350,6 +350,10 @@ void CPlayScene::Load()
 	{
 		quadtree = new Quadtree(1, 0.0f, 192.0f, 1024.0f, 0.0f);
 	}
+	else if (ids == 4)
+	{
+		quadtree = new Quadtree(1, 0.0f, 960.0f, 2048.0f, 0.0f);
+	}
 	
 }
 
@@ -532,6 +536,15 @@ void CPlayScene::SetCamPos() {
 		cy = 192;
 		break;
 	}
+	case 4:
+	{
+		cx -= game->GetScreenWidth() / 2;
+		cy += game->GetScreenHeight() / 2;
+		/*cx = 0;
+		cy = 960;*/
+		break;
+	}
+
 	default:
 		break;
 	}

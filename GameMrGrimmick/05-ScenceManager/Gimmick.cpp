@@ -107,7 +107,6 @@ void CGimmick::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLL
 			if(c->ny<0)
 			ny = 0;
 		}
-		
 	}
 
 	if (min_ix >= 0) coEventsResult.push_back(coEvents[min_ix]);
@@ -155,7 +154,7 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (holdJump == 1)
 	{
-		if (abs(y - startJump) <= 50)
+		if (abs(y - startJump) <= 60)
 			SetState(GIMMICK_STATE_HOLD_JUMP);
 		else
 		{
@@ -423,13 +422,13 @@ void CGimmick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				CMovingBrick* mb = dynamic_cast<CMovingBrick*>(e->obj);
 
 				if (e->t > 0 && e->t <= 1)
+				{
+					//if (e->ny > 0) {
 
-					if (e->ny > 0) {
-
-						isFollow = true;
-						obj = mb;
-					}
-
+					isFollow = true;
+					obj = mb;
+					//}
+				}
 			}
 			if (dynamic_cast<CPortal*>(e->obj)) {
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);
