@@ -221,11 +221,12 @@ void Star::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 			}
 			// chạm quái 
-			else if (dynamic_cast<BlackEnemy*>(e->obj))
+			else if(dynamic_cast<BlackEnemy*>(e->obj))
 			{
 				BlackEnemy* black = dynamic_cast<BlackEnemy*>(e->obj);
 				black->SetState(BLACKENEMY_STATE_DIE);
-				//this->SetState(STAR_STATE_SMOKE);
+				this->SetState(STAR_STATE_SMOKE);
+				CGame::GetInstance()->IncScore(120);
 			}
 			else if (dynamic_cast<BoomBoss*>(e->obj))
 			{
@@ -233,13 +234,14 @@ void Star::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (boomBoss->live != 1)
 				{
 					boomBoss->SetState(BOOMBOSS_STATE_BEING_ATTACKED);
-					//boomBoss->x -= 15;
+					boomBoss->x = 82;
 					//boomBoss->y += 5;
 					boomBoss->attacking_start = 0;
 					boomBoss->live--;
 				}
 				else
 				{
+					CGame::GetInstance()->IncScore(500);
 					boomBoss->SetState(BOOMBOSS_STATE_DIE);
 				}
 				this->SetState(STAR_STATE_SMOKE);
@@ -247,12 +249,17 @@ void Star::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else if (dynamic_cast<Worm*>(e->obj))
 			{
 				Worm* worm = dynamic_cast<Worm*>(e->obj);
+				CGame::GetInstance()->IncScore(90);
 				worm->SetState(WORM_STATE_DIE);
 				this->SetState(STAR_STATE_SMOKE);
 			}
 			else if (dynamic_cast<CThunder*>(e->obj))
 			{
 
+				this->SetState(STAR_STATE_SMOKE);
+			}else if (dynamic_cast<ElectricBoom*>(e->obj))
+			{
+				ElectricBoom* electricBoom = dynamic_cast<ElectricBoom*>(e->obj);
 				this->SetState(STAR_STATE_SMOKE);
 			}
 			// set time nổ khói 

@@ -841,6 +841,7 @@ void CGimmick::GetItem(int type)
 		if (type == ITEM_TYPE_MEDICINE_PINK)
 		{
 			game->IncLight(1);
+			game->IncScore(140);
 		}
 		// neu khong co san trong itemlist thì thêm 
 		for each (int item in itemlist)
@@ -856,6 +857,8 @@ void CGimmick::GetItem(int type)
 	{
 		// tăng mạng
 		game->IncLight(2);
+		game->IncScore(480);
+
 	}
 	else if (type == ITEM_TYPE_FLOWER)
 	{
